@@ -15,5 +15,8 @@ urlpatterns = patterns('',
 
     # Main page for your app. Change or modify this.
     url(r'^/?$', 'furlough_tracker.views.index', name='index'),
+
+    url(r'^ajax/person.html$', 'furlough_tracker.views.person', name='person'),
+    url(r'^ajax/settings.html$', 'furlough_tracker.views.settings', name='settings'),
 )
 
