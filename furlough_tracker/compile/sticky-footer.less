@@ -1,0 +1,36 @@
+/* To use sticky footers with fixed navbar, uncomment the line including
+ * this file in bootstrap.less and follow the instructions here:
+ * https://gist.github.com/1918937
+ */
+
+// total footer height including any border, margin, or padding
+@footerHeight: @navbarHeight;
+
+html, body, .container, .content {
+    height: 100%;
+}
+
+.container, .content {
+    position: relative;
+}
+
+.proper-content {
+    padding-top: 40px; /* >= navbar height */
+}
+
+.wrapper {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -@footerHeight;
+}
+
+.push {
+    height: @footerHeight;
+}
+
+.footer-wrapper {
+    position: relative;
+    height: @footerHeight;
+}
+
