@@ -1,31 +1,25 @@
-      <div class="navbar navbar-fixed-top">
-        <div class="navbar-inner">
-          <div class="container">
+<div class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
+    <div id="nav-container">
 
-            <a class="brand" href="/">Flashdown</a>
-            <div class="nav-collapse">
-              <ul class="nav">
-                  <li>
-                      <a class="active" href="#">
-                          <i class="icon-home"></i>
-                          Dashboard
-                      </a>
-                  </li>
-                  <li>
-                      <a href="#">
-                          <i class="icon-play"></i>
-                          Link1
-                      </a>
-                  </li>
-                  <li>
-                      <a href="#">
-                          <i class="icon-search"></i>
-                          Link2
-                      </a>
-                  </li>
-              </ul>
-            </div><!--/.nav-collapse -->
-          </div><!--/.container -->
-        </div><!--/.navbar-inner -->
-      </div><!--/.navbar-fixed-top -->
+      <a class="brand" href="/"  onclick="showContent('mytimeline'); return false">Furlow Tracker</a>
 
+      <div class="nav-collapse">
+        <ul class="nav">
+            <li>
+                <a href="#" onclick="showContent('add-person'); return false">
+                    <i class="icon-plus"></i>
+                    Person
+                </a>
+            </li>
+            <li>
+                <a href="#" onclick="showContent('settings'); return false">
+                    <i class="icon-wrench"></i>
+                    Settings
+                </a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

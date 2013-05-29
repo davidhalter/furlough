@@ -18,6 +18,10 @@
     {% compress css %}
     <link href="{{ STATIC_URL }}style.css" rel="stylesheet">
     {% endcompress %}
+    {% compress css %}
+    <link href="{{ STATIC_URL }}font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    {% endcompress %}
+    <link rel="stylesheet" href=""> 
 
     {% block css %} {% endblock %}
 

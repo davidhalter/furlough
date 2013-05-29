@@ -1,3 +1,6 @@
+// ------------------
+// Initializations
+// ------------------
 var timeline = undefined;
 var data = undefined;
 
@@ -15,6 +18,28 @@ $(window).resize(function(){
                     );  
 })
 $(window).resize();
+
+// ------------------
+// gui
+// ------------------
+
+function showContent(which) {
+    $('#content div.content-element').css({'display': 'None'})
+
+    el = $('#' + which).css({'display': 'block'})
+    if (which != 'mytimeline'){
+        el.html('<i id="spin" class="icon-refresh icon-spin icon-4x"></i>')
+        // get the new stuff with ajax
+        $.ajax("ajax/" + which + ".html")
+         .done(function(data) {el.html(data);})
+         .fail(function() { el.html("ajax error - reload page, contact admin if it happens often."); })
+    }
+}
+
+
+// ------------------
+// timeline
+// ------------------
 
 // Called when the Visualization API is loaded.
 function drawVisualization() {
