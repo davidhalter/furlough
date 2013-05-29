@@ -3,14 +3,15 @@
 {% block title %}Django-skel with Bootstrap{% endblock %}
 
 {% block navbar %}
-  {% include "navbar.html" %}
+    {% include "navbar.html" %}
+{% endblock %}
+
+{% block sidebar %}
+    hello
 {% endblock %}
 
 {% block content %}
-<div class="container">
-  <h2>Django-skel with bootstrap 2.2.2</h2>
-  <p>Not much to see here. It's all standard bootstrap except for the
-  FontAwesome icons in the navbar.</p>
-</div>
+    <div id="mytimeline"></div>
+    <!--<a id="new" title="Add new status event" href="javascript:void(0);" onclick="onNew();">+</a>-->
 {% endblock %}
 

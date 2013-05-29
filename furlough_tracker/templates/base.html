@@ -12,24 +12,43 @@
     {% compress css %}
     <link href="{{ STATIC_URL }}css/bootstrap.css" rel="stylesheet">
     {% endcompress %}
+    {% compress css %}
+    <link href="{{ STATIC_URL }}timeline/timeline.css" rel="stylesheet">
+    {% endcompress %}
+    {% compress css %}
+    <link href="{{ STATIC_URL }}style.css" rel="stylesheet">
+    {% endcompress %}
+
     {% block css %} {% endblock %}
 
+    <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+    <script src="{{ STATIC_URL }}jquery-1.8.1.min.js"></script>
+    {% compress js %}
+    <script src="{{ STATIC_URL }}timeline/timeline.js"></script>
+    {% endcompress %}
     {% compress js %}
     <script src="{{ STATIC_URL }}js/modernizr.js"></script>
     {% endcompress %}
+    {% compress js %}
+    <script src="{{ STATIC_URL }}main.js"></script>
+    {% endcompress %}
   </head>
 
-    <body>
+  <body onresize="timeline.redraw();" onload="$(window).resize();">
 
-      {% block navbar %}
-      {% endblock %}
+    {% block navbar %}
+    {% endblock %}
 
-      <div class="wrapper">
-
-        {% block content %}
-        {% endblock %}
-
-      </div><!--/.wrapper -->
+    <div class="cointainer-fluid">
+        <div class="row-fluid">
+            <div id="sidebar">
+                {% block sidebar %} {% endblock %}
+            </div>
+            <div id="content">
+                {% block content %} {% endblock %}
+            </div>
+        </div>
+    </div>
 
     <!-- JS - placed at the end of the document so the pages load faster -->
     {% compress js %}
