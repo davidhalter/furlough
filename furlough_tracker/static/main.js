@@ -2,7 +2,7 @@
 // Initializations
 // ------------------
 var timeline = undefined;
-var data = undefined;
+var timeline_data = undefined;
 
 google.load("visualization", "1");
 
@@ -51,31 +51,12 @@ function showContent(which) {
 
 // Called when the Visualization API is loaded.
 function drawVisualization() {
-    // Create and populate a data table.
-    data = new google.visualization.DataTable();
-    data.addColumn('datetime', 'start');
-    data.addColumn('datetime', 'end');
-    data.addColumn('string', 'content');
-    data.addColumn('string', 'group');
-    data.addColumn('string', 'className');
-
-    // create some random data
-    var names = ["Algie", "Barney", "Chris"];
-    for (var n = 0, len = names.length; n < len; n++) {
-        var name = names[n];
-        var now = new Date();
-        var end = new Date(now.getTime() - 12 * 60 * 60 * 1000);
-        for (var i = 0; i < 5; i++) {
-            var start = new Date(end.getTime() + Math.round(Math.random() * 5) * 60 * 60 * 1000);
-            var end = new Date(start.getTime() + Math.round(4 + Math.random() * 5) * 60 * 60 * 1000);
-
-            var r = Math.round(Math.random() * 2);
-            var availability = (r === 0 ? "Unavailable" : (r === 1 ? "Available" : "Maybe"));
-            var group = availability.toLowerCase();
-            var content = availability;
-            data.addRow([start, end, content, name, group]);
-        }
-    }
+    timeline_data = new google.visualization.DataTable();
+    timeline_data.addColumn('datetime', 'start');
+    timeline_data.addColumn('datetime', 'end');
+    timeline_data.addColumn('string', 'content');
+    timeline_data.addColumn('string', 'group');
+    timeline_data.addColumn('string', 'className');
 
     // specify options
     var options = {
@@ -95,14 +76,50 @@ function drawVisualization() {
     // register event listeners
     google.visualization.events.addListener(timeline, 'edit', onEdit);
 
-    // Draw our timeline with the created data and options
-    timeline.draw(data, options);
-
+    var now = new Date();
     // Set a customized visible range
     var start = new Date(now.getTime() - 4 * 60 * 60 * 1000);
     var end = new Date(now.getTime() + 8 * 60 * 60 * 1000);
     timeline.setVisibleChartRange(start, end);
+
+    // Draw our timeline with the created data and options
+    timeline.draw(timeline_data, options);
+
+    // ajax function to refresh graph
+    setInterval(function(){
+        $.getJSON('timeline.json', function(data) {fill_timeline(data);});
+    }, 1000);
 }
+
+
+function fill_timeline(data){
+    // clear table, seams very complicated. strange.
+    var num = timeline_data.getNumberOfRows()
+    if (num >= 0){
+        timeline_data.removeRows(0, num)
+    }
+
+    var now = new Date();
+    // Create and populate a data table.
+    var names = ["Algie", "Barney", "Chris"];
+    for (var n = 0, len = names.length; n < len; n++) {
+        var name = names[n];
+        var end = new Date(now.getTime() - 12 * 60 * 60 * 1000);
+        for (var i = 0; i < 5; i++) {
+            var start = new Date(end.getTime() + Math.round(Math.random() * 5) * 60 * 60 * 1000);
+            var end = new Date(start.getTime() + Math.round(4 + Math.random() * 5) * 60 * 60 * 1000);
+
+            var r = Math.round(Math.random() * 2);
+            var availability = (r === 0 ? "Unavailable" : (r === 1 ? "Available" : "Maybe"));
+            var group = availability.toLowerCase();
+            var content = availability;
+            timeline_data.addRow([start, end, content, name, group]);
+        }
+    }
+    timeline.redraw()
+}
+
+
 
 function getRandomName() {
     var names = ["Algie", "Barney", "Grant", "Mick", "Langdon"];
@@ -132,15 +149,15 @@ function strip(html)
 // Make a callback function for the select event
 var onEdit = function (event) {
     var row = getSelectedRow();
-    var content = data.getValue(row, 2);
+    var content = timeline_data.getValue(row, 2);
     var availability = strip(content);
     var newAvailability = prompt("Enter status\n\n" +
             "Choose from: Available, Unavailable, Maybe", availability);
     if (newAvailability != undefined) {
         var newContent = newAvailability;
-        data.setValue(row, 2, newContent);
-        data.setValue(row, 4, newAvailability.toLowerCase());
-        timeline.draw(data);
+        timeline_data.setValue(row, 2, newContent);
+        timeline_data.setValue(row, 4, newAvailability.toLowerCase());
+        timeline.draw(timeline_data);
     }
 };
 

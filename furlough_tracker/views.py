@@ -1,4 +1,7 @@
+import json
+
 from django.shortcuts import render, render_to_response, redirect
+from django.http import HttpResponse
 from django import forms
 from django.template import RequestContext
 from django.db.models import ProtectedError
@@ -53,6 +56,15 @@ class ColorInput(forms.TextInput):
 def index(request):
     return render(request, 'index.html',
                   context_instance=RequestContext(request))
+
+def timeline_json(request):
+    lst = []
+    for cap in models.Capability.objects.all():
+        lst.append(cap.name)
+        for person in cap.persons():
+            lst.append((person.name, list(person.offtimes())))
+    return HttpResponse(json.dumps(lst),
+                               mimetype="application/json")
 
 
 def person(request):

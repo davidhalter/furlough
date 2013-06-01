@@ -23,6 +23,9 @@ class Person(models.Model):
     def capabilities(self):
         return Capability.objects.filter(personcapability__person=self)
 
+    def offtimes(self):
+        return Offtime.objects.filter(person=self)
+
 
 
 class Capability(models.Model):
@@ -30,6 +33,9 @@ class Capability(models.Model):
 
     def __str__(self):
         return self.name
+
+    def persons(self):
+        return Person.objects.filter(personcapability__capability=self)
 
 
 class PersonCapability(models.Model):

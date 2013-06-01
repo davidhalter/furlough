@@ -15,6 +15,7 @@ urlpatterns = patterns('',
 
     # Main page for your app. Change or modify this.
     url(r'^/?$', 'furlough_tracker.views.index', name='index'),
+    url(r'^timeline.json$', 'furlough_tracker.views.timeline_json'),
 
     url(r'^person.html$', 'furlough_tracker.views.person', name='person'),
     url(r'^settings.html$', 'furlough_tracker.views.settings', name='settings'),
