@@ -92,5 +92,5 @@ def change_settings(request, what, action, id):
         'data_form': form,
         'delete_error': delete_error
     }
-    return render_to_response('change_settings.html', context,
+    return render_to_response('api.html', context,
                               context_instance=RequestContext(request))

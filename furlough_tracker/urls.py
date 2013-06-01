@@ -19,6 +19,7 @@ urlpatterns = patterns('',
     url(r'^person.html$', 'furlough_tracker.views.person', name='person'),
     url(r'^settings.html$', 'furlough_tracker.views.settings', name='settings'),
 
-    url(r'^settings/(capability|offtime_type)/(edit|delete)/(\d+)\.html$', 'furlough_tracker.views.change_settings'),
+    url(r'^api/(capability|offtime_type)/(edit|delete)/(\d+)\.html$',
+        'furlough_tracker.views.change_settings', name='api'),
 )
 
