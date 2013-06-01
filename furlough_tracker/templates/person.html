@@ -1,0 +1,51 @@
+{% extends "index.html" %}
+{% load crispy_forms_tags %}
+
+{% block ext_js %}{% endblock %}
+
+{% block content %}
+    <div class="content-element" id="person">
+        <h2>Persons</h2>
+        <table class="table table-striped table-hover">
+            <tr>
+                <th>Name</th>
+                <th>Capabilities</th>
+                <th>Actions</th>
+            </tr>
+        {% for person, person_capability_form in persons %}
+            <tr>
+                <td>{{ person.name }}</td>
+                <td>
+                    {% for cap in person.capabilities %}
+                        <div style="width:220px; float: left">
+                            {{ cap.name }}
+                        </div>
+                        <a href="/person_capability/delete/p{{ person.pk }}c{{ cap.pk }}" 
+                            class="btn btn-danger">x</a>
+                        <br />
+                    {% endfor %}
+                    <form method='POST'>
+                        {% for part in person_capability_form %}
+                            {{ part }}
+                        {% endfor %}
+                        {% csrf_token %}
+                        <input type="hidden" name='person' value="{{ person.pk }}" />
+                        <input type="submit" value="Add" class="btn" />
+                    </form>
+                </td>
+                <td>
+                    <a href="/person/person/edit/{{ person.pk }}.html"
+                       class="btn btn-warning">Edit</a>
+                    <a href="/person/person/delete/{{ person.pk }}.html"
+                       class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </table>
+
+        <hr />
+
+        <h3>Add new Person</h3>
+        {% crispy person_form %}
+    </div>
+{% endblock %}

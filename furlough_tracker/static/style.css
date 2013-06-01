@@ -18,6 +18,14 @@ body {
     margin-left: 20px;
 }
 
+#person table form {
+    margin: 0px;
+}
+
+#person table form select {
+    float: left;
+}
+
 #mytimeline {
     height: 100%;
     width: 100%;

@@ -6,7 +6,7 @@
 {% block content %}
     <div class="content-element" id="change_settings">
         {% if action == 'delete' %}
-            <h2>Delete {{ name }} #{{ data.pk }}</h2>
+            <h2>Delete {{ name }} "{{ data.name }}" (#{{ data.pk }})</h2>
             {% if delete_error %}
                 <p class="text-error">Sorry, deletion not possible, because it
                     still uses related objects.

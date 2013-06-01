@@ -19,7 +19,9 @@ urlpatterns = patterns('',
     url(r'^person.html$', 'furlough_tracker.views.person', name='person'),
     url(r'^settings.html$', 'furlough_tracker.views.settings', name='settings'),
 
-    url(r'^api/(capability|offtime_type)/(edit|delete)/(\d+)\.html$',
-        'furlough_tracker.views.change_settings', name='api'),
+    url(r'^(person|settings)/(capability|offtime_type|person)/(edit|delete)/(\d+)\.html$',
+        'furlough_tracker.views.change_api'),
+    url(r'^person_capability/delete/p(\d+)c(\d+)$',
+        'furlough_tracker.views.delete_person_capability'),
 )
 
