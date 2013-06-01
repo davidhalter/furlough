@@ -1,5 +1,14 @@
-from django.db import models
+import re
 
+from django.db import models
+from django.forms import ValidationError
+
+
+class ColorField(models.CharField):
+    def validate(self, value, model_instance):
+        if not re.match('#[\da-f]', value):
+            raise ValidationError("Color doesn't have a valid hex code!")
+        super(type(self), self).validate(value, model_instance)
 
 class Person(models.Model):
     name = models.CharField()
@@ -22,8 +31,10 @@ class OfftimeType(models.Model):
         ('vacation', 'Vacation'),
         ('untracked', 'Untracked Time')
     )
-    color = models.CharField()
-    type_choices = models.CharField(choices=CALCULATED_CHOICES)
+    name = models.CharField(null=False, max_length=30)
+    color = ColorField(null=False, max_length=7, default='#000000')
+    type_choices = models.CharField(null=False, default='furlough',
+                                    max_length=20, choices=CALCULATED_CHOICES)
 
 
 class Offtime(models.Model):

@@ -9,20 +9,27 @@ google.load("visualization", "1");
 // Set callback to run when API is loaded
 google.setOnLoadCallback(drawVisualization);
 
-$(window).resize(function(){
-    $('#content').height( $(window).height() - $(".navbar").height() 
-                    - parseInt($(".navbar").css("margin-bottom"))
-                    - parseInt($(".navbar").css("margin-top")) 
-                    - parseInt($('#content').css("margin-bottom"))
-                    - parseInt($('#content').css("margin-top"))
-                    );  
-})
-$(window).resize();
+$(document).ready(function(){
+    if ($('#mytimeline').length != 0){
+        $(window).resize(function(){
+            $('#content').height( $(window).height() - $(".navbar").height() 
+                            - parseInt($(".navbar").css("margin-bottom"))
+                            - parseInt($(".navbar").css("margin-top")) 
+                            - parseInt($('#content').css("margin-bottom"))
+                            - parseInt($('#content').css("margin-top"))
+                            );  
+        })
+        $(window).resize();
+    }else{
+        console.log('blubblub')
+    }
+});
 
 // ------------------
 // gui
 // ------------------
 
+/*
 function showContent(which) {
     $('#content div.content-element').css({'display': 'None'})
 
@@ -36,6 +43,7 @@ function showContent(which) {
     }
 }
 
+*/
 
 // ------------------
 // timeline
