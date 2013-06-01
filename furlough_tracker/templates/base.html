@@ -25,7 +25,9 @@
 
     {% block css %} {% endblock %}
 
-    {% block ext_js %} {% endblock %}
+    {% block ext_js %}
+        <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+    {% endblock %}
 
     <script src="{{ STATIC_URL }}jquery-1.8.1.min.js"></script>
     {% compress js %}

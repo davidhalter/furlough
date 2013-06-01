@@ -1,0 +1,26 @@
+{% extends "index.html" %}
+{% load crispy_forms_tags %}
+
+{% block ext_js %}{% endblock %}
+
+{% block content %}
+    <div class="content-element" id="change_settings">
+        {% if action == 'delete' %}
+            <h2>Delete {{ name }} #{{ data.pk }}</h2>
+            {% if delete_error %}
+                <p class="text-error">Sorry, deletion not possible, because it
+                    still uses related objects.
+                </p>
+            {% else %}
+                <p>Do you really want to delete "{{ data.name }}"?</p>
+                <form method='POST'>
+                    {% csrf_token %}
+                    <input type='submit' value='Delete' class='btn btn-danger'/>
+                </form>
+            {% endif %}
+        {% else %}
+            <h2>Change {{ name }} #{{ data.pk }}</h2>
+            {% crispy data_form %}
+        {% endif %}
+    </div>
+{% endblock %}

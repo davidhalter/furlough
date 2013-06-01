@@ -48,10 +48,10 @@ MANAGERS = ADMINS
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.',
-        'NAME': '',
-        'USER': '',
-        'PASSWORD': '',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'furlough',
+        'USER': 'furlough',
+        'PASSWORD': 'furlough',
         'HOST': '',
         'PORT': '',
     }
@@ -185,6 +185,8 @@ DJANGO_APPS = (
     # Admin panel and documentation:
     'django.contrib.admin',
     'django.contrib.admindocs',
+
+    'furlough_tracker'
 )
 
 THIRD_PARTY_APPS = (

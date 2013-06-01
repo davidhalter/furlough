@@ -8,9 +8,25 @@
         <h2>Capabilities</h2>
 
         <div class='row-fluid'>
-            <div class='span4'>
+            <div class='span6'>
                 <h3>Current</h3>
-                blabla
+                <table class="table table-striped table-hover">
+                    <tr>
+                        <th>Name</th>
+                        <th>Actions</th>
+                    </tr>
+                {% for cap in capabilities %}
+                    <tr>
+                        <td>{{ cap.name }}</td>
+                        <td>
+                            <a href="/settings/capability/edit/{{ cap.pk }}.html"
+                               class="btn btn-warning">Edit</a>
+                            <a href="/settings/capability/delete/{{ cap.pk }}.html"
+                               class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </table>
             </div>
             <div class='span3'>
                 <h3>Add New</h3>
@@ -21,9 +37,29 @@
         <h2>Offtime-Types</h2>
 
         <div class='row-fluid'>
-            <div class='span4'>
+            <div class='span6'>
                 <h3>Current</h3>
-                blabla
+                <table class="table table-striped table-hover">
+                    <tr>
+                        <th>Name</th>
+                        <th>Color</th>
+                        <th>Type</th>
+                        <th>Actions</th>
+                    </tr>
+                {% for off in offtime_types %}
+                    <tr>
+                        <td>{{ off.name }}</td>
+                        <td><div style='background-color:{{ off.color }}; width: 25px;'>&nbsp;</div></td>
+                        <td>{{ off.type }}</td>
+                        <td>
+                            <a href="/settings/offtime_type/edit/{{off.pk}}.html"
+                               class="btn btn-warning">Edit</a>
+                            <a href="/settings/offtime_type/delete/{{off.pk}}.html"
+                               class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </table>
             </div>
             <div class='span3'>
                 <h3>Add New</h3>
