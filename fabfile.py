@@ -17,7 +17,7 @@ HEROKU_ADDONS = (
     'sentry:developer',
 )
 HEROKU_CONFIGS = (
-    'DJANGO_SETTINGS_MODULE=furlough_tracker.settings.prod',
+    'DJANGO_SETTINGS_MODULE=furlough.settings.prod',
     'SECRET_KEY=f6p*(+(904may_14i0+tlraizoxky%(e=iu(!f&uh775m1d27b'
     'AWS_ACCESS_KEY_ID=xxx',
     'AWS_SECRET_ACCESS_KEY=xxx',

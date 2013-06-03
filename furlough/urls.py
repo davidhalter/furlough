@@ -14,15 +14,15 @@ urlpatterns = patterns('',
     url(r'', include('password_reset.urls')),
 
     # Main page for your app. Change or modify this.
-    url(r'^/?$', 'furlough_tracker.views.index', name='index'),
-    url(r'^timeline.json$', 'furlough_tracker.views.timeline_json'),
+    url(r'^/?$', 'furlough.views.index', name='index'),
+    url(r'^timeline.json$', 'furlough.views.timeline_json'),
 
-    url(r'^person.html$', 'furlough_tracker.views.person', name='person'),
-    url(r'^settings.html$', 'furlough_tracker.views.settings', name='settings'),
+    url(r'^person.html$', 'furlough.views.person', name='person'),
+    url(r'^settings.html$', 'furlough.views.settings', name='settings'),
 
     url(r'^(person|settings)/(capability|offtime_type|person)/(edit|delete)/(\d+)\.html$',
-        'furlough_tracker.views.change_api'),
+        'furlough.views.change_api'),
     url(r'^person_capability/delete/p(\d+)c(\d+)$',
-        'furlough_tracker.views.delete_person_capability'),
+        'furlough.views.delete_person_capability'),
 )
 

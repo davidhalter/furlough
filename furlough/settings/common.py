@@ -186,7 +186,7 @@ DJANGO_APPS = (
     'django.contrib.admin',
     'django.contrib.admindocs',
 
-    'furlough_tracker'
+    'furlough'
 )
 
 THIRD_PARTY_APPS = (
