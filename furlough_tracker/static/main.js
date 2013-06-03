@@ -60,7 +60,7 @@ function drawVisualization() {
 
     // specify options
     var options = {
-        width:  "100%",
+        width:  "99%",
         height: "99%",
         layout: "box",
         axisOnTop: true,
@@ -96,11 +96,39 @@ function fill_timeline(data){
     // clear table, seams very complicated. strange.
     var num = timeline_data.getNumberOfRows()
     if (num >= 0){
-        timeline_data.removeRows(0, num)
+        timeline_data.removeRows(0, num);
     }
 
-    var now = new Date();
     // Create and populate a data table.
+    $.each(data, function(index, value) {
+        var is_group = false;
+        if (typeof value === 'string'){
+            is_group = true;
+            value = [value, []];
+        }
+        var name = value[0]
+        var values = value[1];
+        if (values.length == 0) {
+            var date = new Date(1, 01, 01);
+            values = [[date, date, '']];
+        }
+        $.each(values, function(index2, date_tuple) {
+            var content = date_tuple[2];
+            var className = content == '' ? 'timeline_hidden' : content.toLowerCase();
+            var start = date_tuple[0];
+            var end = date_tuple[1];
+            group = '<div class="timeline_hidden">' + index + '</div>'
+            if (is_group == true){
+                group = group + '<b>' + name + '</b>'
+            }else{
+                group = group + name
+            }
+            console.log([start, end, content, group, className]);
+            timeline_data.addRow([start, end, content, group, className]);
+        });
+    });
+    /*
+    var now = new Date();
     var names = ["Algie", "Barney", "Chris"];
     for (var n = 0, len = names.length; n < len; n++) {
         var name = names[n];
@@ -116,7 +144,8 @@ function fill_timeline(data){
             timeline_data.addRow([start, end, content, name, group]);
         }
     }
-    timeline.redraw()
+    */
+    timeline.redraw();
 }
 
 

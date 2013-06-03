@@ -63,6 +63,13 @@ def timeline_json(request):
         lst.append(cap.name)
         for person in cap.persons():
             lst.append((person.name, list(person.offtimes())))
+    untracked = False
+    for person in models.Person.objects.filter(deleted=False):
+        if not person.capabilities():
+            if not untracked:
+                lst.append('No capabilities')
+                untracked = True
+            lst.append((person.name, list(person.offtimes())))
     return HttpResponse(json.dumps(lst),
                                mimetype="application/json")
 
@@ -132,9 +139,9 @@ def change_api(request, origin, what, action, id):
             else:
                 try:
                     data.delete()
+                    return redirect('/%s.html' % origin)
                 except ProtectedError:
                     delete_error = True
-            return redirect('/%s.html' % origin)
         else:
             form = mapping[what][1](request.POST, instance=data)
             if form.is_valid():

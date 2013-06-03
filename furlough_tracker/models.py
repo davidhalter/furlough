@@ -72,4 +72,6 @@ class Offtime(models.Model):
     person = models.ForeignKey(Person, null=False)
     type = models.ForeignKey(OfftimeType, null=False, on_delete=models.PROTECT)
     accepted = models.BooleanField(null=False, default=False)
+    start_time = models.DateField(null=False)
+    end_time = models.DateField(null=False)
     deleted = models.BooleanField(null=False, default=False)

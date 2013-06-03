@@ -3,7 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>{% block title %}{% endblock %}</title>
+    <title>{% block title %}Furlough Tracker{% endblock %}</title>
 
     <!-- HTML5 shim, for IE6-8 support of HTML elements -->
     <!--[if lt IE 9]>
@@ -44,6 +44,7 @@
   <body onresize="timeline.redraw();" onload="$(window).resize();">
 
     {% block navbar %}
+        {% include "navbar.html" %}
     {% endblock %}
 
     <div class="cointainer-fluid">

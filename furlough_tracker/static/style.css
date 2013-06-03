@@ -35,6 +35,10 @@ body {
     margin-left: 260px;
 }
 
+#sidebar-content {
+    margin: 25px;
+}
+
 /* Custom styles for the Timeline */
 div.timeline-frame {
     border-color: #5D99C3;
@@ -80,6 +84,9 @@ div.available {
 div.maybe {
     background-color: #FFA500; /* orange */
     border-color: #cc8100;     /* orange */
+}
+div.timeline_hidden {
+    display: None;
 }
 
 /* fix for wrong timeline paths */

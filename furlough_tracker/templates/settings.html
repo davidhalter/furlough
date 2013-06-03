@@ -1,4 +1,4 @@
-{% extends "index.html" %}
+{% extends "base.html" %}
 {% load crispy_forms_tags %}
 
 {% block ext_js %}{% endblock %}
@@ -19,9 +19,9 @@
                     <tr>
                         <td>{{ cap.name }}</td>
                         <td>
-                            <a href="/api/capability/edit/{{ cap.pk }}.html"
+                            <a href="/settings/capability/edit/{{ cap.pk }}.html"
                                class="btn btn-warning">Edit</a>
-                            <a href="/api/capability/delete/{{ cap.pk }}.html"
+                            <a href="/settings/capability/delete/{{ cap.pk }}.html"
                                class="btn btn-danger">Delete</a>
                         </td>
                     </tr>
@@ -52,9 +52,9 @@
                         <td><div style='background-color:{{ off.color }}; width: 25px;'>&nbsp;</div></td>
                         <td>{{ off.type }}</td>
                         <td>
-                            <a href="/api/offtime_type/edit/{{off.pk}}.html"
+                            <a href="/settings/offtime_type/edit/{{off.pk}}.html"
                                class="btn btn-warning">Edit</a>
-                            <a href="/api/offtime_type/delete/{{off.pk}}.html"
+                            <a href="/settings/offtime_type/delete/{{off.pk}}.html"
                                class="btn btn-danger">Delete</a>
                         </td>
                     </tr>
