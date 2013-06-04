@@ -49,6 +49,19 @@ class PersonForm(forms.ModelForm):
 
 
 class OfftimeForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(type(self), self).__init__(*args, **kwargs)
+        self.fields["person"].queryset = \
+                            models.Person.objects.filter(deleted=False)
+
+    def clean(self):
+        start_date = self.cleaned_data.get("start_date")
+        end_date = self.cleaned_data.get("end_date")
+        if end_date <= start_date:
+            msg = u"End date should be greater than start date."
+            self._errors["end_date"] = self.error_class([msg])
+        return self.cleaned_data
+
     class Meta:
         model = models.Offtime
         fields = 'person', 'type', 'start_date', 'end_date', 'accepted'
