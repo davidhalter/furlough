@@ -64,7 +64,7 @@ class OfftimeForm(forms.ModelForm):
 
     class Meta:
         model = models.Offtime
-        fields = 'person', 'type', 'start_date', 'end_date', 'accepted'
+        fields = 'person', 'type', 'start_date', 'end_date', 'accepted', 'comment'
 
 
 class ColorInput(forms.TextInput):
@@ -82,18 +82,23 @@ def index(request):
 
 
 def timeline_json(request):
+    def offtimes(person):
+        return [(o.pk, o.start_date.strftime('%Y-%m-%d'),
+                 o.end_date.strftime('%Y-%m-%d'), o.accepted, o.type.name,
+                 o.type.color) for o in person.offtimes()]
+
     lst = []
     for cap in models.Capability.objects.all():
         lst.append(cap.name)
         for person in cap.persons():
-            lst.append((person.name, list(person.offtimes())))
+            lst.append((person.name, offtimes(person)))
     untracked = False
     for person in models.Person.objects.filter(deleted=False):
         if not person.capabilities():
             if not untracked:
                 lst.append('No capabilities')
                 untracked = True
-            lst.append((person.name, list(person.offtimes())))
+            lst.append((person.name, offtimes(person)))
     return HttpResponse(json.dumps(lst),
                                mimetype="application/json")
 

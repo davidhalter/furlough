@@ -81,4 +81,5 @@ class Offtime(models.Model):
     start_date = models.DateField(null=False)
     end_date = models.DateField(null=False)
     accepted = models.BooleanField(null=False, default=False)
+    comment = models.TextField(null=False, default='')
     deleted = models.BooleanField(null=False, default=False)

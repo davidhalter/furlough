@@ -76,6 +76,7 @@ function showContent(which) {
 // Called when the Visualization API is loaded.
 function drawVisualization() {
     timeline_data = new google.visualization.DataTable();
+    timeline_data.addColumn('number', 'id');
     timeline_data.addColumn('datetime', 'start');
     timeline_data.addColumn('datetime', 'end');
     timeline_data.addColumn('string', 'content');
@@ -134,13 +135,14 @@ function fill_timeline(data){
         var values = value[1];
         if (values.length == 0) {
             var date = new Date(1, 01, 01);
-            values = [[date, date, '']];
+            values = [[0, date, date, false, '', '#000000']];
         }
         $.each(values, function(index2, date_tuple) {
-            var content = date_tuple[2];
+            var id = date_tuple[0]
+            var start = new Date(date_tuple[1]);
+            var end = new Date(date_tuple[2]);
+            var content = date_tuple[4];
             var className = content == '' ? 'timeline_hidden' : content.toLowerCase();
-            var start = date_tuple[0];
-            var end = date_tuple[1];
             group = '<div class="timeline_hidden">' + index + '</div>'
             if (is_group == true){
                 group = group + '<b>' + name + '</b>'
@@ -148,7 +150,7 @@ function fill_timeline(data){
                 group = group + name
             }
             console.log([start, end, content, group, className]);
-            timeline_data.addRow([start, end, content, group, className]);
+            timeline_data.addRow([id, start, end, content, group, className]);
         });
     });
     /*
@@ -173,14 +175,6 @@ function fill_timeline(data){
 }
 
 
-
-function getRandomName() {
-    var names = ["Algie", "Barney", "Grant", "Mick", "Langdon"];
-
-    var r = Math.round(Math.random() * (names.length - 1));
-    return names[r];
-}
-
 function getSelectedRow() {
     var row = undefined;
     var sel = timeline.getSelection();
@@ -191,6 +185,7 @@ function getSelectedRow() {
     }
     return row;
 }
+
 
 function strip(html)
 {

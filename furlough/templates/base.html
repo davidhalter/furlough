@@ -26,6 +26,7 @@
     {% block css %} {% endblock %}
 
     {% block ext_js %}
+        <script type="text/javascript" src="http://www.google.com/jsapi"></script>
     {% endblock %}
 
     <script src="{{ STATIC_URL }}jquery-1.8.1.min.js"></script>
@@ -53,7 +54,7 @@
     <div class="cointainer-fluid">
         <div class="row-fluid">
             <div id="sidebar">
-                {% block sidebar %} {% endblock %}
+                {% block sidebar %} &nbsp; {% endblock %}
             </div>
             <div id="content">
                 {% block content %} {% endblock %}
