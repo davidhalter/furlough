@@ -171,7 +171,20 @@ def change_api(request, origin, what, action, id):
                               context_instance=RequestContext(request))
 
 
-def delete_person_capability(self, person_id, capability_id):
+def delete_person_capability(request, person_id, capability_id):
     models.PersonCapability.objects.filter(person__pk=person_id,
                                        capability__pk=capability_id).delete()
     return redirect('person')
+
+
+def add_offtime(request):
+    if request.method == 'POST':
+        f = OfftimeForm(request.POST)
+        if f.is_valid():
+            f.save()
+            return HttpResponse('', mimetype="application/json")
+    else:
+        f = OfftimeForm()
+
+    return render_to_response('offtime_form_modal.html', {'offtime_form': f},
+                              context_instance=RequestContext(request))

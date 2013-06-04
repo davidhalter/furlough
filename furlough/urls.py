@@ -24,5 +24,6 @@ urlpatterns = patterns('',
         'furlough.views.change_api'),
     url(r'^person_capability/delete/p(\d+)c(\d+)$',
         'furlough.views.delete_person_capability'),
+    url(r'^add_offtime.html$', 'furlough.views.add_offtime'),
 )
 

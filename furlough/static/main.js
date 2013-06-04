@@ -23,17 +23,35 @@ $(document).ready(function(){
         });
         $(window).resize();
 
-        $('#addOfftime').on('shown', function () {
-            console.log('blubblub')
-            $('#addOfftime #id_start_date').datepicker({"dateFormat": 'yy-mm-dd'});
-            $('#addOfftime #id_end_date').datepicker({"dateFormat": 'yy-mm-dd'});
-        });
+        $('#addOfftime #id_start_date').datepicker({"dateFormat": 'yy-mm-dd'});
+        $('#addOfftime #id_end_date').datepicker({"dateFormat": 'yy-mm-dd'});
     }
 });
 
 // ------------------
 // gui
 // ------------------
+
+function addOfftime(clean){
+    if (clean == true){
+        $.get('/add_offtime.html', function(data) {
+            $('#addOfftime div.modal-body').html(data);
+            $('#addOfftime #id_start_date').datepicker({"dateFormat": 'yy-mm-dd'});
+            $('#addOfftime #id_end_date').datepicker({"dateFormat": 'yy-mm-dd'});
+        });
+    }else{
+        $.post('/add_offtime.html', $('#addOfftime form').serialize(), function(data) {
+            if (data == null){
+                $('#addOfftime').modal('hide')
+                addOfftime(true)
+            }else{
+                $('#addOfftime div.modal-body').html(data);
+                $('#addOfftime #id_start_date').datepicker({"dateFormat": 'yy-mm-dd'});
+                $('#addOfftime #id_end_date').datepicker({"dateFormat": 'yy-mm-dd'});
+            }
+        });
+    }
+}
 
 /*
 function showContent(which) {
@@ -50,9 +68,6 @@ function showContent(which) {
 }
 
 */
-
-function openAddOfftime() {
-}
 
 // ------------------
 // timeline

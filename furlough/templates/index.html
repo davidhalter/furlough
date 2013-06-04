@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% load crispy_forms_tags %}
 
 {% block sidebar %}
     <div id="sidebar-content">
@@ -14,7 +13,7 @@
         {% if add_type_warning %}
             <hr />
             <div class="alert alert-error">
-                <b>Please add <a href='/settings.html'>offtime types</a></b>.
+                <b>Please add <a href='/settings.html'>offtime types</a>.</b>
                 Without it, you cannot add "offtimes".
             </div>
         {% endif %}
@@ -32,11 +31,11 @@
         <h3 id="myModalLabel">Add Offtime</h3>
       </div>
       <div class="modal-body">
-        {% crispy offtime_form %}
+        {% include "offtime_form_modal.html" %}
       </div>
       <div class="modal-footer">
         <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-        <button class="btn btn-primary" onclick="">Add Offtime</button>
+        <button class="btn btn-primary" onclick="addOfftime()">Add Offtime</button>
       </div>
     </div>
 {% endblock %}
