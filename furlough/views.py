@@ -45,17 +45,28 @@ class PersonForm(forms.ModelForm):
 
     class Meta:
         model = models.Person
-        fields = ('first_name', 'last_name')
+        fields = 'first_name', 'last_name'
+
+
+class OfftimeForm(forms.ModelForm):
+    class Meta:
+        model = models.Offtime
+        fields = 'person', 'type', 'start_date', 'end_date', 'accepted'
 
 
 class ColorInput(forms.TextInput):
     input_type = 'color'
 
 
-
 def index(request):
-    return render(request, 'index.html',
+    context = {
+        'offtime_form': OfftimeForm(),
+        'add_person_warning': not models.Person.objects.filter(deleted=False).count(),
+        'add_type_warning': not models.OfftimeType.objects.count(),
+    }
+    return render(request, 'index.html', context,
                   context_instance=RequestContext(request))
+
 
 def timeline_json(request):
     lst = []
@@ -136,10 +147,11 @@ def change_api(request, origin, what, action, id):
             if hasattr(data, 'deleted'):
                 data.deleted = True
                 data.save()
+                return redirect(origin)
             else:
                 try:
                     data.delete()
-                    return redirect('/%s.html' % origin)
+                    return redirect(origin)
                 except ProtectedError:
                     delete_error = True
         else:

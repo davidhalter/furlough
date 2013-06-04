@@ -16,17 +16,16 @@
     <link href="{{ STATIC_URL }}timeline/timeline.css" rel="stylesheet">
     {% endcompress %}
     {% compress css %}
+    <link href="{{ STATIC_URL }}jquery-ui-1.10.2.css" rel="stylesheet">
+    {% endcompress %}
+    <link href="{{ STATIC_URL }}font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    {% compress css %}
     <link href="{{ STATIC_URL }}style.css" rel="stylesheet">
     {% endcompress %}
-    {% compress css %}
-    <link href="{{ STATIC_URL }}font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    {% endcompress %}
-    <link rel="stylesheet" href=""> 
 
     {% block css %} {% endblock %}
 
     {% block ext_js %}
-        <script type="text/javascript" src="http://www.google.com/jsapi"></script>
     {% endblock %}
 
     <script src="{{ STATIC_URL }}jquery-1.8.1.min.js"></script>
@@ -37,11 +36,15 @@
     <script src="{{ STATIC_URL }}js/modernizr.js"></script>
     {% endcompress %}
     {% compress js %}
+    <script src="{{ STATIC_URL }}jquery-ui-1.10.2.js"></script>
+    {% endcompress %}
+    {% compress js %}
     <script src="{{ STATIC_URL }}main.js"></script>
     {% endcompress %}
+    
   </head>
 
-  <body onresize="timeline.redraw();" onload="$(window).resize();">
+  <body onresize="if (timeline !== undefined) timeline.redraw();" onload="$(window).resize();">
 
     {% block navbar %}
         {% include "navbar.html" %}

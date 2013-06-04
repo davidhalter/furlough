@@ -20,6 +20,9 @@ class Person(models.Model):
     def name(self):
         return self.first_name + ' ' + self.last_name
 
+    def __str__(self):
+        return self.name
+
     def capabilities(self):
         return Capability.objects.filter(personcapability__person=self)
 
@@ -44,6 +47,7 @@ class PersonCapability(models.Model):
 
     class Meta:
         unique_together = 'person', 'capability'
+        db_table = 'person_capability'
 
 
 class OfftimeType(models.Model):
@@ -67,11 +71,14 @@ class OfftimeType(models.Model):
     def type(self):
         return dict(self.CALCULATED_CHOICES)[self.type_choice]
 
+    def __str__(self):
+        return self.name
+
 
 class Offtime(models.Model):
     person = models.ForeignKey(Person, null=False)
     type = models.ForeignKey(OfftimeType, null=False, on_delete=models.PROTECT)
+    start_date = models.DateField(null=False)
+    end_date = models.DateField(null=False)
     accepted = models.BooleanField(null=False, default=False)
-    start_time = models.DateField(null=False)
-    end_time = models.DateField(null=False)
     deleted = models.BooleanField(null=False, default=False)

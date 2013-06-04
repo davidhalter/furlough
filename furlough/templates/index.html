@@ -1,12 +1,43 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 
 {% block sidebar %}
     <div id="sidebar-content">
-        <a href="#" class="btn btn-primary">Add Offtime</a>
+        <a href="#addOfftime" role="button" class="btn btn-primary" data-toggle="modal">Add Offtime</a>
+        {% if add_person_warning %}
+            <hr />
+            <div class="alert alert-error">
+                <b>Please add a <a href='/person.html'>person</a> first.</b>
+                The application doesn't make sense otherwise.
+            </div>
+        {% endif %}
+        {% if add_type_warning %}
+            <hr />
+            <div class="alert alert-error">
+                <b>Please add <a href='/settings.html'>offtime types</a></b>.
+                Without it, you cannot add "offtimes".
+            </div>
+        {% endif %}
     </div>
 {% endblock %}
 
 {% block content %}
     <div class="content-element" id="mytimeline"></div>
+ 
+    <!-- Modal -->
+    <div id="addOfftime" class="modal hide fade" tabindex="-1" 
+            role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Add Offtime</h3>
+      </div>
+      <div class="modal-body">
+        {% crispy offtime_form %}
+      </div>
+      <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        <button class="btn btn-primary" onclick="">Add Offtime</button>
+      </div>
+    </div>
 {% endblock %}
 

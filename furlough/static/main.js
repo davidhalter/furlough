@@ -4,10 +4,12 @@
 var timeline = undefined;
 var timeline_data = undefined;
 
-google.load("visualization", "1");
+if (google !== undefined){
+    google.load("visualization", "1");
 
-// Set callback to run when API is loaded
-google.setOnLoadCallback(drawVisualization);
+    // Set callback to run when API is loaded
+    google.setOnLoadCallback(drawVisualization);
+}
 
 $(document).ready(function(){
     if ($('#mytimeline').length != 0){
@@ -18,10 +20,14 @@ $(document).ready(function(){
                             - parseInt($('#content').css("margin-bottom"))
                             - parseInt($('#content').css("margin-top"))
                             );  
-        })
+        });
         $(window).resize();
-    }else{
-        console.log('blubblub')
+
+        $('#addOfftime').on('shown', function () {
+            console.log('blubblub')
+            $('#addOfftime #id_start_date').datepicker({"dateFormat": 'yy-mm-dd'});
+            $('#addOfftime #id_end_date').datepicker({"dateFormat": 'yy-mm-dd'});
+        });
     }
 });
 
@@ -44,6 +50,9 @@ function showContent(which) {
 }
 
 */
+
+function openAddOfftime() {
+}
 
 // ------------------
 // timeline
