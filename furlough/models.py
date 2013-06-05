@@ -12,9 +12,9 @@ class ColorField(models.CharField):
 
 
 class Person(models.Model):
-    first_name = models.CharField(null=False, max_length=30)
-    last_name = models.CharField(null=False, max_length=30)
-    deleted = models.BooleanField(null=False, default=False)
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30)
+    deleted = models.BooleanField(default=False)
 
     @property
     def name(self):
@@ -32,7 +32,7 @@ class Person(models.Model):
 
 
 class Capability(models.Model):
-    name = models.CharField(null=False, max_length=30)
+    name = models.CharField(max_length=30)
 
     def __str__(self):
         return self.name
@@ -42,8 +42,8 @@ class Capability(models.Model):
 
 
 class PersonCapability(models.Model):
-    person = models.ForeignKey(Person, null=False)
-    capability = models.ForeignKey(Capability, null=False, on_delete=models.PROTECT)
+    person = models.ForeignKey(Person)
+    capability = models.ForeignKey(Capability, on_delete=models.PROTECT)
 
     class Meta:
         unique_together = 'person', 'capability'
@@ -59,9 +59,9 @@ class OfftimeType(models.Model):
         (VACATION, 'Vacation'),
         (UNTRACKED, 'Untracked Time')
     )
-    name = models.CharField(null=False, max_length=30)
-    color = ColorField(null=False, max_length=7, default='#000000')
-    type_choice = models.CharField(null=False, default=UNTRACKED,
+    name = models.CharField(max_length=30)
+    color = ColorField(max_length=7, default='#000000')
+    type_choice = models.CharField(default=UNTRACKED,
                                    max_length=20, choices=CALCULATED_CHOICES)
 
     class Meta:
@@ -76,10 +76,11 @@ class OfftimeType(models.Model):
 
 
 class Offtime(models.Model):
-    person = models.ForeignKey(Person, null=False)
-    type = models.ForeignKey(OfftimeType, null=False, on_delete=models.PROTECT)
-    start_date = models.DateField(null=False)
-    end_date = models.DateField(null=False)
-    accepted = models.BooleanField(null=False, default=False)
-    comment = models.TextField(null=False, default='')
-    deleted = models.BooleanField(null=False, default=False)
+    person = models.ForeignKey(Person)
+    type = models.ForeignKey(OfftimeType, on_delete=models.PROTECT)
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
+    accepted = models.BooleanField(default=False)
+    comment = models.TextField(blank=True)
+    deleted = models.BooleanField(default=False)
+    added_date = models.DateTimeField(auto_now_add=True, blank=True)

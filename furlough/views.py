@@ -57,7 +57,7 @@ class OfftimeForm(forms.ModelForm):
     def clean(self):
         start_date = self.cleaned_data.get("start_date")
         end_date = self.cleaned_data.get("end_date")
-        if end_date <= start_date:
+        if None not in (start_date, end_date) and end_date <= start_date:
             msg = u"End date should be greater than start date."
             self._errors["end_date"] = self.error_class([msg])
         return self.cleaned_data
@@ -83,9 +83,9 @@ def index(request):
 
 def timeline_json(request):
     def offtimes(person):
-        return [(o.pk, o.start_date.strftime('%Y-%m-%d'),
-                 o.end_date.strftime('%Y-%m-%d'), o.accepted, o.type.name,
-                 o.type.color) for o in person.offtimes()]
+        return [(o.pk, o.start_date.strftime('%Y-%m-%d %H:%M:%S'),
+                 o.end_date.strftime('%Y-%m-%d %H:%M:%S'), o.accepted,
+                 o.type.name, o.type.color) for o in person.offtimes()]
 
     lst = []
     for cap in models.Capability.objects.all():

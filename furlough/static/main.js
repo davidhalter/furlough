@@ -149,7 +149,7 @@ function fill_timeline(data){
             }else{
                 group = group + name
             }
-            console.log([start, end, content, group, className]);
+            //console.log([start, end, content, group, className]);
             timeline_data.addRow([id, start, end, content, group, className]);
         });
     });
