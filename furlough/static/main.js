@@ -26,6 +26,21 @@ $(document).ready(function(){
         $('#addOfftime #id_start_date').datepicker({"dateFormat": 'yy-mm-dd'});
         $('#addOfftime #id_end_date').datepicker({"dateFormat": 'yy-mm-dd'});
     }
+
+    $.styleSheetContains = function (f) {
+        var hasstyle = false;
+        var fullstylesheets = document.styleSheets;
+        for (var sx = 0; sx < fullstylesheets.length; sx++) {
+            var sheetclasses = fullstylesheets[sx].rules || document.styleSheets[sx].cssRules;
+            for (var cx = 0; cx < sheetclasses.length; cx++) {
+                if (sheetclasses[cx].selectorText == f) {
+                    hasstyle = true; break;
+                    //return classes[x].style;               
+                }
+            }
+        }
+        return hasstyle;
+    };
 });
 
 // ------------------
@@ -121,9 +136,9 @@ function drawVisualization() {
 function fill_timeline(data){
     OFFTIME_TYPE_STR = 'timeline_offtime_type_'
 
-    function add_offtime(name, offtime_id, offtime_type_id, start, end, accepted){
+    function add_offtime(name, offtime_id, offtime_type_id, start, end, accepted, deleted){
         is_group = (offtime_id == -1)
-        var className = is_group ? 'timeline_hidden' : OFFTIME_TYPE_STR + offtime_type_id;
+        var class_name = is_group ? 'timeline_hidden' : OFFTIME_TYPE_STR + offtime_type_id;
         var content_name = is_group ? '' : data['offtime_types'][offtime_type_id][0];
 
         var group = '<div class="timeline_hidden">' + counter + '</div>';
@@ -132,8 +147,8 @@ function fill_timeline(data){
         }else{
             group = group + name;
         }
-        //console.log([start, end, content, group, className]);
-        timeline_data.addRow([offtime_id, start, end, content_name, group, className]);
+        console.log([start, end, content_name, group, class_name]);
+        timeline_data.addRow([offtime_id, start, end, content_name, group, class_name]);
     }
 
     // clear table, seams very complicated. strange.
@@ -146,7 +161,7 @@ function fill_timeline(data){
     var counter = 0
     $.each(data['capabilities'], function(cap_name, persons) {
         var date = new Date(1, 01, 01);
-        add_offtime(cap_name, -1, -1, date, date, true, '', false);
+        add_offtime(cap_name, -1, -1, date, date, true, false);
         counter += 1;
         $.each(persons, function(i, person_id) {
             var person_tup = data['persons'][person_id];
@@ -158,7 +173,8 @@ function fill_timeline(data){
                 var start = new Date(offtime_tup[2]);
                 var end = new Date(offtime_tup[3]);
                 var accepted = new Date(offtime_tup[4]);
-                add_offtime(person_name, offtime_id, offtime_type_id, start, end, accepted);
+                var deleted = new Date(offtime_tup[5]);
+                add_offtime(person_name, offtime_id, offtime_type_id, start, end, accepted, deleted);
             });
         });
         /*
@@ -211,8 +227,12 @@ function fill_timeline(data){
     timeline.redraw();
 
     $.each(data['offtime_types'], function(offtime_type_id, offtime_tup) {
+        var cls = '.' + OFFTIME_TYPE_STR + offtime_type_id
+        if (!$.styleSheetContains(cls)){
+            $("<style type='text/css'> " + cls + "{} </style>").appendTo("head");
+        }
         var offtime_color = offtime_tup[1];
-        $(OFFTIME_TYPE_STR + offtime_type_id).css({'background-color': offtime_color})
+        $(cls).css({'background-color': offtime_color})
     });
 }
 
