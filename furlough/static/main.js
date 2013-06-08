@@ -92,7 +92,7 @@ function showContent(which) {
 // Called when the Visualization API is loaded.
 function drawVisualization() {
     timeline_data = new google.visualization.DataTable();
-    timeline_data.addColumn('number', 'id');
+    timeline_data.addColumn('number', 'offtime_id');
     timeline_data.addColumn('datetime', 'start');
     timeline_data.addColumn('datetime', 'end');
     timeline_data.addColumn('string', 'content');
@@ -116,7 +116,7 @@ function drawVisualization() {
     timeline = new links.Timeline(document.getElementById('mytimeline'));
 
     // register event listeners
-    google.visualization.events.addListener(timeline, 'edit', onEdit);
+    google.visualization.events.addListener(timeline, 'select', select_timeline_object);
 
     var now = new Date();
     // Set a customized visible range
@@ -167,24 +167,27 @@ function fill_timeline(data){
     // Create and populate a data table.
     var counter = 0
     $.each(data['capabilities'], function(cap_name, persons) {
-        var date = new Date(1, 01, 01);
-        add_offtime(cap_name, -1, -1, date, date, true, false);
-        counter += 1;
-        $.each(persons, function(i, person_id) {
-            var person_tup = data['persons'][person_id];
-            var person_name = person_tup[0];
-            var offtimes = person_tup[1];
-            $.each(offtimes, function(i, offtime_tup) {
-                var offtime_id = offtime_tup[0];
-                var offtime_type_id = offtime_tup[1];
-                var start = new Date(offtime_tup[2]);
-                var end = new Date(offtime_tup[3]);
-                var accepted = new Date(offtime_tup[4]);
-                var deleted = new Date(offtime_tup[5]);
-                add_offtime(person_name, offtime_id, offtime_type_id, start, end, accepted, deleted);
-            });
+        if (persons.length){
+            var date = new Date(1, 01, 01);
+            add_offtime(cap_name, -1, -1, date, date, true, false);
             counter += 1;
-        });
+            $.each(persons, function(i, person_id) {
+                var person_tup = data['persons'][person_id];
+                var person_name = person_tup[0];
+                var offtimes = person_tup[1];
+                $.each(offtimes, function(i, offtime_tup) {
+                    var offtime_id = offtime_tup[0];
+                    var offtime_type_id = offtime_tup[1];
+                    var start = new Date(offtime_tup[2]);
+                    var end = new Date(offtime_tup[3]);
+                    var accepted = new Date(offtime_tup[4]);
+                    var deleted = new Date(offtime_tup[5]);
+                    add_offtime(person_name, offtime_id, offtime_type_id, start, end, accepted, deleted);
+                });
+                counter += 1;
+            });
+        }
+    });
 
     timeline.redraw();
 
@@ -197,44 +200,7 @@ function fill_timeline(data){
     });
 }
 
-
-function getSelectedRow() {
-    var row = undefined;
-    var sel = timeline.getSelection();
-    if (sel.length) {
-        if (sel[0].row != undefined) {
-            row = sel[0].row;
-        }
-    }
-    return row;
-}
-
-
-function strip(html)
-{
-    var tmp = document.createElement("DIV");
-    tmp.innerHTML = html;
-    return tmp.textContent||tmp.innerText;
-}
-
-// Make a callback function for the select event
-var onEdit = function (event) {
-    var row = getSelectedRow();
-    var content = timeline_data.getValue(row, 2);
-    var availability = strip(content);
-    var newAvailability = prompt("Enter status\n\n" +
-            "Choose from: Available, Unavailable, Maybe", availability);
-    if (newAvailability != undefined) {
-        var newContent = newAvailability;
-        timeline_data.setValue(row, 2, newContent);
-        timeline_data.setValue(row, 4, newAvailability.toLowerCase());
-        timeline.draw(timeline_data);
-    }
+var select_timeline_object = function (event) {
+    offtime_id = timeline_data.getValue(timeline.getSelection()[0].row, 0)
+    console.log('timeline', offtime_id)
 };
-
-var onNew = function () {
-    alert("Clicking this NEW button should open a popup window where " +
-            "a new status event can be created.\n\n" +
-            "Apperently this is not yet implemented...");
-};
-
