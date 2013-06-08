@@ -3,6 +3,7 @@
 // ------------------
 var timeline = undefined;
 var timeline_data = undefined;
+var timeline_last_request = undefined;
 
 if (google !== undefined){
     google.load("visualization", "1");
@@ -128,7 +129,13 @@ function drawVisualization() {
 
     // ajax function to refresh graph
     setInterval(function(){
-        $.getJSON('timeline.json', function(data) {fill_timeline(data);});
+        $.get('timeline.json', function(data) {
+            if (data != timeline_last_request){
+                //console.log('update timeline data', data);
+                timeline_last_request = data;
+                fill_timeline(JSON.parse(data));
+            }
+        }, 'text');
     }, 1000);
 }
 
@@ -176,6 +183,7 @@ function fill_timeline(data){
                 var deleted = new Date(offtime_tup[5]);
                 add_offtime(person_name, offtime_id, offtime_type_id, start, end, accepted, deleted);
             });
+            counter += 1;
         });
         /*
         var is_group = false;
@@ -228,11 +236,10 @@ function fill_timeline(data){
 
     $.each(data['offtime_types'], function(offtime_type_id, offtime_tup) {
         var cls = '.' + OFFTIME_TYPE_STR + offtime_type_id
-        if (!$.styleSheetContains(cls)){
-            $("<style type='text/css'> " + cls + "{} </style>").appendTo("head");
-        }
         var offtime_color = offtime_tup[1];
-        $(cls).css({'background-color': offtime_color})
+        style = "<style type='text/css'> " + cls + "{background-color: " 
+                                    + offtime_color + " !important;} </style>"
+        $(style).appendTo("body");
     });
 }
 
