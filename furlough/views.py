@@ -82,25 +82,41 @@ def index(request):
 
 
 def timeline_json(request):
-    def offtimes(person):
-        return [(o.pk, o.start_date.strftime('%Y-%m-%d %H:%M:%S'),
-                 o.end_date.strftime('%Y-%m-%d %H:%M:%S'), o.accepted,
-                 o.type.name, o.type.color) for o in person.offtimes()]
+    def add_offtimes(person):
+        offtimes = []
+        for o in person.offtimes():
+            t = add_offtime_type(o.type)
+            tup = (o.pk, t, o.start_date.strftime('%Y-%m-%d %H:%M:%S'),
+                   o.end_date.strftime('%Y-%m-%d %H:%M:%S'), o.accepted)
+            offtimes.append(tup)
+        return offtimes
 
-    lst = []
-    for cap in models.Capability.objects.all():
-        lst.append(cap.name)
-        for person in cap.persons():
-            lst.append((person.name, offtimes(person)))
-    untracked = False
+    def add_offtime_type(typ):
+        offtime_types[typ.pk] = typ.name, typ.color
+        return typ.pk
+
+    NO_CAP = 'No capabilities'
+    capabilities = {NO_CAP: []}
+    persons = {}
+    offtime_types = {}
+
     for person in models.Person.objects.filter(deleted=False):
-        if not person.capabilities():
-            if not untracked:
-                lst.append('No capabilities')
-                untracked = True
-            lst.append((person.name, offtimes(person)))
-    return HttpResponse(json.dumps(lst),
-                               mimetype="application/json")
+        caps = person.capabilities()
+        for c in caps:
+            if c.name not in capabilities:
+                capabilities[c.name] = []
+            capabilities[c.name].append(person.pk)
+        if not caps:
+            capabilities[NO_CAP].append(person.pk)
+
+        persons[person.pk] = [person.name, add_offtimes(person)]
+
+    content = {
+        'persons': persons,
+        'capabilities': capabilities,
+        'offtime_types': offtime_types,
+    }
+    return HttpResponse(json.dumps(content), mimetype="application/json")
 
 
 def person(request):

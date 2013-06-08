@@ -89,9 +89,10 @@ function drawVisualization() {
         height: "99%",
         layout: "box",
         axisOnTop: true,
-        eventMargin: 10,  // minimal margin between events
+        eventMargin: 4,  // minimal margin between events
         eventMarginAxis: 0, // minimal margin beteen events and the axis
-        editable: true,
+        editable: false,
+        zoomMin: 1000 * 60 * 60 * 24 * 5, // minimal zoom: 5 days
         showNavigation: true
     };
 
@@ -118,6 +119,23 @@ function drawVisualization() {
 
 
 function fill_timeline(data){
+    OFFTIME_TYPE_STR = 'timeline_offtime_type_'
+
+    function add_offtime(name, offtime_id, offtime_type_id, start, end, accepted){
+        is_group = (offtime_id == -1)
+        var className = is_group ? 'timeline_hidden' : OFFTIME_TYPE_STR + offtime_type_id;
+        var content_name = is_group ? '' : data['offtime_types'][offtime_type_id][0];
+
+        var group = '<div class="timeline_hidden">' + counter + '</div>';
+        if (is_group){
+            group = group + '<b>' + name + '</b>';
+        }else{
+            group = group + name;
+        }
+        //console.log([start, end, content, group, className]);
+        timeline_data.addRow([offtime_id, start, end, content_name, group, className]);
+    }
+
     // clear table, seams very complicated. strange.
     var num = timeline_data.getNumberOfRows()
     if (num >= 0){
@@ -125,7 +143,25 @@ function fill_timeline(data){
     }
 
     // Create and populate a data table.
-    $.each(data, function(index, value) {
+    var counter = 0
+    $.each(data['capabilities'], function(cap_name, persons) {
+        var date = new Date(1, 01, 01);
+        add_offtime(cap_name, -1, -1, date, date, true, '', false);
+        counter += 1;
+        $.each(persons, function(i, person_id) {
+            var person_tup = data['persons'][person_id];
+            var person_name = person_tup[0];
+            var offtimes = person_tup[1];
+            $.each(offtimes, function(i, offtime_tup) {
+                var offtime_id = offtime_tup[0];
+                var offtime_type_id = offtime_tup[1];
+                var start = new Date(offtime_tup[2]);
+                var end = new Date(offtime_tup[3]);
+                var accepted = new Date(offtime_tup[4]);
+                add_offtime(person_name, offtime_id, offtime_type_id, start, end, accepted);
+            });
+        });
+        /*
         var is_group = false;
         if (typeof value === 'string'){
             is_group = true;
@@ -152,6 +188,7 @@ function fill_timeline(data){
             //console.log([start, end, content, group, className]);
             timeline_data.addRow([id, start, end, content, group, className]);
         });
+        */
     });
     /*
     var now = new Date();
@@ -172,6 +209,11 @@ function fill_timeline(data){
     }
     */
     timeline.redraw();
+
+    $.each(data['offtime_types'], function(offtime_type_id, offtime_tup) {
+        var offtime_color = offtime_tup[1];
+        $(OFFTIME_TYPE_STR + offtime_type_id).css({'background-color': offtime_color})
+    });
 }
 
 
