@@ -185,53 +185,7 @@ function fill_timeline(data){
             });
             counter += 1;
         });
-        /*
-        var is_group = false;
-        if (typeof value === 'string'){
-            is_group = true;
-            value = [value, []];
-        }
-        var name = value[0]
-        var values = value[1];
-        if (values.length == 0) {
-            var date = new Date(1, 01, 01);
-            values = [[0, date, date, false, '', '#000000']];
-        }
-        $.each(values, function(index2, date_tuple) {
-            var id = date_tuple[0]
-            var start = new Date(date_tuple[1]);
-            var end = new Date(date_tuple[2]);
-            var content = date_tuple[4];
-            var className = content == '' ? 'timeline_hidden' : content.toLowerCase();
-            group = '<div class="timeline_hidden">' + index + '</div>'
-            if (is_group == true){
-                group = group + '<b>' + name + '</b>'
-            }else{
-                group = group + name
-            }
-            //console.log([start, end, content, group, className]);
-            timeline_data.addRow([id, start, end, content, group, className]);
-        });
-        */
-    });
-    /*
-    var now = new Date();
-    var names = ["Algie", "Barney", "Chris"];
-    for (var n = 0, len = names.length; n < len; n++) {
-        var name = names[n];
-        var end = new Date(now.getTime() - 12 * 60 * 60 * 1000);
-        for (var i = 0; i < 5; i++) {
-            var start = new Date(end.getTime() + Math.round(Math.random() * 5) * 60 * 60 * 1000);
-            var end = new Date(start.getTime() + Math.round(4 + Math.random() * 5) * 60 * 60 * 1000);
 
-            var r = Math.round(Math.random() * 2);
-            var availability = (r === 0 ? "Unavailable" : (r === 1 ? "Available" : "Maybe"));
-            var group = availability.toLowerCase();
-            var content = availability;
-            timeline_data.addRow([start, end, content, name, group]);
-        }
-    }
-    */
     timeline.redraw();
 
     $.each(data['offtime_types'], function(offtime_type_id, offtime_tup) {
