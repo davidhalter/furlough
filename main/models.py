@@ -115,7 +115,7 @@ class OfftimeType(models.Model):
         (UNTRACKED, 'Untracked Time')
     )
     name = models.CharField(max_length=30)
-    color = ColorField(max_length=7, default='#000000')
+    color = ColorField(max_length=7, default='#66B0FF')
     type_choice = models.CharField(default=UNTRACKED,
                                    max_length=20, choices=CALCULATED_CHOICES)
 
