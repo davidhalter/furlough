@@ -120,6 +120,30 @@ def timeline_json(request):
     return HttpResponse(json.dumps(content), mimetype="application/json")
 
 
+def offtime(request, offtime_id, action=None):
+    offtime = models.Offtime.objects.get(pk=offtime_id)
+    if action is not None:
+        if action == 'accept':
+            offtime.accepted = True
+        elif action == 'delete':
+            offtime.deleted = True
+        offtime.save()
+    return render(request, 'offtime.html', {'offtime': offtime},
+                  context_instance=RequestContext(request))
+
+
+def person_detail(request, person_id):
+    person = models.Person.objects.get(pk=person_id)
+
+    context = {
+        'person': person,
+        'unaccepted_offtimes': person.offtimes().filter(accepted=False)
+    }
+
+    return render(request, 'person_detail.html', context,
+                  context_instance=RequestContext(request))
+
+
 def person(request):
     form = PersonForm(request.POST or None)
     data = ((p, PersonCapabilityForm(initial={'person': p})) for p in

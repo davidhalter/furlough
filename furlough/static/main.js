@@ -129,7 +129,7 @@ function drawVisualization() {
 
     // ajax function to refresh graph
     setInterval(function(){
-        $.get('timeline.json', function(data) {
+        $.get('ajax/timeline.json', function(data) {
             if (data != timeline_last_request){
                 //console.log('update timeline data', data);
                 timeline_last_request = data;
@@ -143,7 +143,7 @@ function drawVisualization() {
 function fill_timeline(data){
     OFFTIME_TYPE_STR = 'timeline_offtime_type_'
 
-    function add_offtime(name, offtime_id, offtime_type_id, start, end, accepted, deleted){
+    function add_offtime(person_id, name, offtime_id, offtime_type_id, start, end, accepted, deleted){
         is_group = (offtime_id == -1)
         var class_name = is_group ? 'timeline_hidden' : OFFTIME_TYPE_STR + offtime_type_id;
         var content_name = is_group ? '' : data['offtime_types'][offtime_type_id][0];
@@ -152,7 +152,7 @@ function fill_timeline(data){
         if (is_group){
             group = group + '<b>' + name + '</b>';
         }else{
-            group = group + name;
+            group = group + '<a href="#" onclick="return show_person_detail(' + person_id + ')">' + name + '</a>';
         }
         console.log([start, end, content_name, group, class_name]);
         timeline_data.addRow([offtime_id, start, end, content_name, group, class_name]);
@@ -169,7 +169,7 @@ function fill_timeline(data){
     $.each(data['capabilities'], function(cap_name, persons) {
         if (persons.length){
             var date = new Date(1, 01, 01);
-            add_offtime(cap_name, -1, -1, date, date, true, false);
+            add_offtime(-1, cap_name, -1, -1, date, date, true, false);
             counter += 1;
             $.each(persons, function(i, person_id) {
                 var person_tup = data['persons'][person_id];
@@ -182,7 +182,7 @@ function fill_timeline(data){
                     var end = new Date(offtime_tup[3]);
                     var accepted = new Date(offtime_tup[4]);
                     var deleted = new Date(offtime_tup[5]);
-                    add_offtime(person_name, offtime_id, offtime_type_id, start, end, accepted, deleted);
+                    add_offtime(person_id, person_name, offtime_id, offtime_type_id, start, end, accepted, deleted);
                 });
                 counter += 1;
             });
@@ -200,7 +200,29 @@ function fill_timeline(data){
     });
 }
 
+
+function show_person_detail(person_id){
+    $.get('/ajax/person_detail/' + person_id + '.html', function(data) {
+        $('#offtime').html(data);
+    });
+    return false;
+}
+
+function replace_offtime(offtime_id, action){
+    var temp = offtime_id;
+    if (action !== undefined){
+        temp += '/' + action
+    }
+    $.get('/ajax/offtime/' + temp + '.html', function(data) {
+        $('#offtime').html(data);
+    });
+    return false;
+}
+
+
 var select_timeline_object = function (event) {
-    offtime_id = timeline_data.getValue(timeline.getSelection()[0].row, 0)
-    console.log('timeline', offtime_id)
+    var s = timeline.getSelection()[0];
+    if (s){
+        replace_offtime(timeline_data.getValue(s.row, 0));
+    }
 };

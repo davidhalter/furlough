@@ -2,6 +2,7 @@ import re
 
 from django.db import models
 from django.forms import ValidationError
+from django.template.defaultfilters import date
 
 
 class ColorField(models.CharField):
@@ -27,7 +28,10 @@ class Person(models.Model):
         return Capability.objects.filter(personcapability__person=self)
 
     def offtimes(self):
-        return Offtime.objects.filter(person=self)
+        return Offtime.objects.filter(person=self, deleted=False)
+
+    def last_furlough(self):
+        return OfftimeType.objects.filter(person=self)
 
 
 
@@ -84,3 +88,6 @@ class Offtime(models.Model):
     comment = models.TextField(blank=True)
     deleted = models.BooleanField(default=False)
     added_date = models.DateTimeField(auto_now_add=True, blank=True)
+
+    def from_to_str(self):
+        return "from %s to %s" % (date(self.start_date), date(self.end_date))

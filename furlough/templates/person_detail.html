@@ -1,0 +1,16 @@
+<h3>{{ person }}</h3>
+
+{{ person }}
+
+<h4>Waiting for Approval</h4>
+
+
+<ul>
+    {% for o in unaccepted_offtimes %}
+        <li><b>{{ o.type }}</b>
+            <a href='#' onclick='return replace_offtime({{ o.pk }})'>
+                {{ o.from_to_str }}
+            </a>
+        </li>
+    {% endfor %}
+</ul>
