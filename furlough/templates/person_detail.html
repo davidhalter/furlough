@@ -1,16 +1,39 @@
 <h3>{{ person }}</h3>
 
-{{ person }}
+{% if person.latest_furlough %} 
+    Latest furlough:
+    <br/>
+    {{ person.latest_furlough.from_to_str | capfirst}}
+    Vacation days available: 
+    {{ person.latest_furlough.available_vacation_days }}
+    {{ person.latest_furlough.available_vacation_days_approved }}
+{% else %} 
+    <p class="text-error">
+        No furlough added yet for {{ person }}. Without a furlough, calculation
+        of vacation days is not possible!
+    </p>
+{% endif %}
 
 <h4>Waiting for Approval</h4>
-
-
 <ul>
     {% for o in unaccepted_offtimes %}
         <li><b>{{ o.type }}</b>
             <a href='#' onclick='return replace_offtime({{ o.pk }})'>
                 {{ o.from_to_str }}
             </a>
+        </li>
+    {% empty %}
+        <li class="text-success">{{ person }} has no unaccepted offtime requests.</li>
+    {% endfor %}
+</ul>
+
+<h4>Capabilities</h4>
+<ul>
+    {% for c in person.capabilities %}
+        <li>{{ c.name }} </li>
+    {% empty %}
+        <li class="text-success">
+            {{ person }} has no capabilities, <a href="/person.html">add one!</a>
         </li>
     {% endfor %}
 </ul>

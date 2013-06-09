@@ -17,7 +17,7 @@ urlpatterns = patterns('',
     url(r'^/?$', 'furlough.views.index', name='index'),
     url(r'^ajax/timeline.json$', 'furlough.views.timeline_json'),
     url(r'^ajax/offtime/(\d+).html$', 'furlough.views.offtime'),
-    url(r'^ajax/offtime/(\d+)/(accept|delete).html$', 'furlough.views.offtime'),
+    url(r'^ajax/offtime/(\d+)/(\w+).html$', 'furlough.views.offtime'),
     url(r'^ajax/person_detail/(\d+).html$', 'furlough.views.person_detail'),
 
     url(r'^person.html$', 'furlough.views.person', name='person'),

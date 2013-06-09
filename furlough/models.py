@@ -30,9 +30,19 @@ class Person(models.Model):
     def offtimes(self):
         return Offtime.objects.filter(person=self, deleted=False)
 
-    def last_furlough(self):
-        return OfftimeType.objects.filter(person=self)
+    def latest_furlough(self):
+        return Offtime.objects.filter(
+                        person=self,
+                        type__type_choice=OfftimeType.FURLOUGH,
+                        deleted=False).latest('end_date')
 
+    def vacation_periods(self):
+        latest_furlough_end = self.latest_furlough().end_date
+        return Offtime.objects.filter(
+                        person=self,
+                        start_date__gt=latest_furlough_end,
+                        type__type_choice=OfftimeType.VACATION,
+                        deleted=False)
 
 
 class Capability(models.Model):

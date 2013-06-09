@@ -4,7 +4,15 @@
 </h3>
 <p>{{ offtime.from_to_str | capfirst }}</p>
 
-{% if not offtime.accepted %}
+{% if offtime.accepted %}
+    <button class="btn btn-success" onclick="replace_offtime({{ offtime.id }}, 'unaccept')">Unaccept</button>
+{% else %}
     <button class="btn btn-success" onclick="replace_offtime({{ offtime.id }}, 'accept')">Accept</button>
 {% endif %}
-<button class="btn btn-danger" onclick="replace_offtime({{ offtime.id }}, 'delete')">Delete</button>
+
+
+{% if offtime.deleted %}
+    <button class="btn btn-danger" onclick="replace_offtime({{ offtime.id }}, 'undelete')">Undelete</button>
+{% else %}
+    <button class="btn btn-danger" onclick="replace_offtime({{ offtime.id }}, 'delete')">Delete</button>
+{% endif %}

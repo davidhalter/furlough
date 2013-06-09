@@ -1,4 +1,5 @@
 import json
+from datetime import timedelta
 
 from django.shortcuts import render, render_to_response, redirect
 from django.http import HttpResponse
@@ -57,10 +58,16 @@ class OfftimeForm(forms.ModelForm):
     def clean(self):
         start_date = self.cleaned_data.get("start_date")
         end_date = self.cleaned_data.get("end_date")
+
+        if end_date is not None:
+            if end_date.hour == end_date.minute == end_date.second == 0:
+                # just add another day, because that's what it means for users
+                end_date += timedelta(1)
+                self.cleaned_data["end_date"] = end_date
         if None not in (start_date, end_date) and end_date <= start_date:
             msg = u"End date should be greater than start date."
             self._errors["end_date"] = self.error_class([msg])
-        return self.cleaned_data
+        return super(type(self), self).clean()
 
     class Meta:
         model = models.Offtime
@@ -125,8 +132,12 @@ def offtime(request, offtime_id, action=None):
     if action is not None:
         if action == 'accept':
             offtime.accepted = True
+        elif action == 'unaccept':
+            offtime.accepted = False
         elif action == 'delete':
             offtime.deleted = True
+        elif action == 'undelete':
+            offtime.deleted = False
         offtime.save()
     return render(request, 'offtime.html', {'offtime': offtime},
                   context_instance=RequestContext(request))

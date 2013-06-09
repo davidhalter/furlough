@@ -24,8 +24,7 @@ $(document).ready(function(){
         });
         $(window).resize();
 
-        $('#addOfftime #id_start_date').datepicker({"dateFormat": 'yy-mm-dd'});
-        $('#addOfftime #id_end_date').datepicker({"dateFormat": 'yy-mm-dd'});
+        setDatePicker();
     }
 
     $.styleSheetContains = function (f) {
@@ -47,23 +46,27 @@ $(document).ready(function(){
 // ------------------
 // gui
 // ------------------
+//
+function setDatePicker(){
+    $('#addOfftime #id_start_date').datepicker({"dateFormat": 'yy-mm-dd'});
+    $('#addOfftime #id_end_date').datepicker({"dateFormat": 'yy-mm-dd'});
+}
 
 function addOfftime(clean){
     if (clean == true){
         $.get('/add_offtime.html', function(data) {
             $('#addOfftime div.modal-body').html(data);
-            $('#addOfftime #id_start_date').datepicker({"dateFormat": 'yy-mm-dd'});
-            $('#addOfftime #id_end_date').datepicker({"dateFormat": 'yy-mm-dd'});
+            setDatePicker();
         });
     }else{
-        $.post('/add_offtime.html', $('#addOfftime form').serialize(), function(data) {
+        var input = $('#addOfftime form').serialize();
+        $.post('/add_offtime.html', input, function(data) {
             if (data == null){
                 $('#addOfftime').modal('hide')
                 addOfftime(true)
             }else{
                 $('#addOfftime div.modal-body').html(data);
-                $('#addOfftime #id_start_date').datepicker({"dateFormat": 'yy-mm-dd'});
-                $('#addOfftime #id_end_date').datepicker({"dateFormat": 'yy-mm-dd'});
+                setDatePicker();
             }
         });
     }
