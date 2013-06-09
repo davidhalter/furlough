@@ -185,8 +185,6 @@ DJANGO_APPS = (
     # Admin panel and documentation:
     'django.contrib.admin',
     'django.contrib.admindocs',
-
-    'furlough'
 )
 
 THIRD_PARTY_APPS = (
@@ -207,6 +205,7 @@ THIRD_PARTY_APPS = (
 )
 
 LOCAL_APPS = (
+    'main',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
