@@ -163,7 +163,7 @@ function fill_timeline(data){
         }else{
             group = group + '<a href="#" onclick="return show_person_detail(' + person_id + ')">' + name + '</a>';
         }
-        console.log([start, end, content_name, group, class_name]);
+        //console.log([start, end, content_name, group, class_name]);
         timeline_data.addRow([offtime_id, start, end, content_name, group, class_name]);
     }
 
