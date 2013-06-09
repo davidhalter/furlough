@@ -1,8 +1,15 @@
 import re
+from datetime import timedelta
 
 from django.db import models
 from django.forms import ValidationError
 from django.template.defaultfilters import date
+
+
+VACATION_PER_YEAR = 20
+
+def vacation_days(start_date, end_date):
+    return int((end_date - start_date).days/365.0*20)
 
 
 class ColorField(models.CharField):
@@ -30,19 +37,53 @@ class Person(models.Model):
     def offtimes(self):
         return Offtime.objects.filter(person=self, deleted=False)
 
-    def latest_furlough(self):
-        return Offtime.objects.filter(
-                        person=self,
-                        type__type_choice=OfftimeType.FURLOUGH,
-                        deleted=False).latest('end_date')
+    def _vacation_period_dates(self):
+        furloughs = \
+                self.offtimes().filter(type__type_choice=OfftimeType.FURLOUGH)
+        if not furloughs:
+            return []
+        last_date = self.offtimes().latest('end_date').end_date
+        dates = zip([f.end_date for f in furloughs],
+                    [f.start_date for f in furloughs[1:]] + [None])
+        YEAR = 365
+        y = timedelta(YEAR)
+        result = []
+        for first, second in dates:
+            temp = second
+            if second is None:
+                second = last_date
+            while first + y < second:
+                result.append((first, first + y))
+                first += y
+            result.append((first, temp or first + y))
+        return result
 
     def vacation_periods(self):
-        latest_furlough_end = self.latest_furlough().end_date
-        return Offtime.objects.filter(
-                        person=self,
-                        start_date__gt=latest_furlough_end,
-                        type__type_choice=OfftimeType.VACATION,
-                        deleted=False)
+        return [VacationPeriod(self, s,e)
+                for s, e in self._vacation_period_dates()]
+
+
+class VacationPeriod(object):
+    def __init__(self, person, start, end):
+        self.start = start
+        self.end = end
+        self.benefit = vacation_days(start, end)
+        vacations = person.offtimes().filter(
+                            type__type_choice=OfftimeType.VACATION,
+                            end_date__gt=start,
+                            start_date__lt=end,
+                            )
+        self.used = 0
+        self.unaccepted = 0
+        for v in vacations:
+            days = (v.end_date - v.start_date).days
+            if v.start_date < start:
+                days -= start - v.start_date
+            if v.end_date > end:
+                days -= v.end_date - end
+            if not v.accepted:
+                self.unaccepted += days
+            self.used += days
 
 
 class Capability(models.Model):

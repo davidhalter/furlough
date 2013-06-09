@@ -1,12 +1,18 @@
 <h3>{{ person }}</h3>
 
-{% if person.latest_furlough %} 
-    Latest furlough:
-    <br/>
-    {{ person.latest_furlough.from_to_str | capfirst}}
+{% if person.vacation_periods %} 
     Vacation days available: 
-    {{ person.latest_furlough.available_vacation_days }}
-    {{ person.latest_furlough.available_vacation_days_approved }}
+    <ul>
+    {% for vacation_period in person.vacation_periods %}
+        <li>
+            Between {{ vacation_period.start | date }}
+            and {{ vacation_period.end | date }},
+            you can book <b>{{ vacation_period.benefit }} days</b>.
+            Of those, you booked <b>{{ vacation_period.used }} days</b>
+            ({{ vacation_period.unaccepted }} not yet accepted).
+        </li>
+    {% endfor %}
+    </ul>
 {% else %} 
     <p class="text-error">
         No furlough added yet for {{ person }}. Without a furlough, calculation
