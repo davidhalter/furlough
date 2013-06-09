@@ -130,6 +130,12 @@ function drawVisualization() {
     // Draw our timeline with the created data and options
     timeline.draw(timeline_data, options);
 
+    var s = new Date();
+    s.setDate(s.getDate() - 90);
+    var e = new Date();
+    e.setDate(e.getDate() + 270);
+    timeline.setVisibleChartRange(s, e)
+
     // ajax function to refresh graph
     setInterval(function(){
         $.get('ajax/timeline.json', function(data) {
