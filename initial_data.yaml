@@ -1,0 +1,18 @@
+- model: main.OfftimeType
+  pk: 1
+  fields:
+    name: Furlough
+    color: "#BBCC33"
+    type_choice: furlough
+- model: main.OfftimeType
+  pk: 2
+  fields:
+    name: Training
+    color: "#3377CC"
+    type_choice: untracked
+- model: main.OfftimeType
+  pk: 3
+  fields:
+    name: Vacation
+    color: "#CC3355"
+    type_choice: untracked

@@ -153,9 +153,9 @@ function fill_timeline(data){
     OFFTIME_TYPE_STR = 'timeline_offtime_type_'
 
     function add_offtime(person_id, name, offtime_id, offtime_type_id, start, end, accepted, deleted){
-        is_group = (offtime_id == -1)
-        var class_name = is_group ? 'timeline_hidden' : OFFTIME_TYPE_STR + offtime_type_id;
-        var content_name = is_group ? '' : data['offtime_types'][offtime_type_id][0];
+        is_group = (person_id == -1)
+        var class_name = offtime_id == -1 ? 'timeline_hidden' : OFFTIME_TYPE_STR + offtime_type_id;
+        var content_name = offtime_id == -1 ? '' : data['offtime_types'][offtime_type_id][0];
 
         var group = '<div class="timeline_hidden">' + counter + '</div>';
         if (is_group){
@@ -193,6 +193,9 @@ function fill_timeline(data){
                     var deleted = new Date(offtime_tup[5]);
                     add_offtime(person_id, person_name, offtime_id, offtime_type_id, start, end, accepted, deleted);
                 });
+                if (!offtimes.length){
+                    add_offtime(person_id, person_name, -1, -1, date, date, true, false);
+                }
                 counter += 1;
             });
         }

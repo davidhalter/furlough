@@ -6,7 +6,7 @@ from fabric.api import abort, env, local, settings, task
 
 
 ########## GLOBALS
-env.run = 'heroku run python manage.py'
+env.run = 'python manage.py'
 CONFIGS = (
     'DJANGO_SETTINGS_MODULE=furlough.settings.prod',
 )
