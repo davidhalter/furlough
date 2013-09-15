@@ -29,7 +29,8 @@ class Person(models.Model):
         return self.first_name + ' ' + self.last_name
 
     def __str__(self):
-        return self.name
+        # somehow this has to be a string, not unicode
+        return self.name.encode('utf-8')
 
     def capabilities(self):
         return Capability.objects.filter(personcapability__person=self)
