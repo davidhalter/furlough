@@ -157,7 +157,13 @@ function fill_timeline(data){
         var class_name = offtime_id == -1 ? 'timeline_hidden' : OFFTIME_TYPE_STR + offtime_type_id;
         var content_name = offtime_id == -1 ? '' : data['offtime_types'][offtime_type_id][0];
 
-        var group = '<div class="timeline_hidden">' + counter + '</div>';
+        function pad(num, size) {
+            // add leading zeros
+            var s = num+"";
+            while (s.length < size) s = "0" + s;
+            return s;
+        }
+        var group = '<div class="timeline_hidden">' + pad(counter, 5) + '</div>';
         if (is_group){
             group = group + '<b>' + name + '</b>';
         }else{
