@@ -1,0 +1,34 @@
+-   fields: {deleted: false, first_name: Darth, last_name: Vader}
+    model: main.person
+    pk: 1
+-   fields: {name: Awesome}
+    model: main.capability
+    pk: 1
+-   fields: {name: Dead-Evil}
+    model: main.capability
+    pk: 2
+-   fields: {capability: 1, person: 1}
+    model: main.personcapability
+    pk: 1
+-   fields: {capability: 2, person: 1}
+    model: main.personcapability
+    pk: 2
+-   fields: {color: '#BBCC33', name: Furlough, type_choice: furlough}
+    model: main.offtimetype
+    pk: 1
+-   fields: {color: '#3377CC', name: Training, type_choice: untracked}
+    model: main.offtimetype
+    pk: 2
+-   fields: {color: '#CC3355', name: Vacation, type_choice: untracked}
+    model: main.offtimetype
+    pk: 3
+-   fields: {accepted: false, added_date: !!timestamp '2013-09-15 04:45:53.654614',
+        comment: Running a death star is hard work!, deleted: false, end_date: !!timestamp '2013-10-24
+            00:00:00', person: 1, start_date: !!timestamp '2013-09-03 00:00:00', type: 3}
+    model: main.offtime
+    pk: 1
+-   fields: {accepted: true, added_date: !!timestamp '2013-09-15 04:47:41.506631',
+        comment: '', deleted: false, end_date: !!timestamp '2013-06-12 00:00:00',
+        person: 1, start_date: !!timestamp '2013-05-06 00:00:00', type: 1}
+    model: main.offtime
+    pk: 2
