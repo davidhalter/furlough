@@ -9,7 +9,7 @@ complicated than in a normal company.
 
 This tools goal is mainly a good visual overview with an easy-to-use GUI.
 
-.. image:: https://github.com/davidhalter/jedi/raw/master/example.png
+.. image:: https://github.com/davidhalter/furlough/raw/master/example.png
 
 
 Install
