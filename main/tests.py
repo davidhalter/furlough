@@ -58,7 +58,10 @@ class TestModels(TestCase):
         offtime.save()
 
         vp = person.vacation_periods()
-        assert vp
+        assert len(vp) == 2
+        # until June 12th
+        self.assertEqual(vp[0].used, 16 + 2)
+        self.assertEqual(vp[1].used, 5)
 
 
 
