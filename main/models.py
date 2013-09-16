@@ -71,7 +71,7 @@ class VacationPeriod(object):
         self.benefit = vacation_days(start, end)
         vacations = person.offtimes().filter(
                             type__type_choice=OfftimeType.VACATION,
-                            end_date__gt=start,
+                            end_date__gte=start,
                             start_date__lt=end,
                             )
         self.used = 0
