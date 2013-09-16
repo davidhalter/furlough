@@ -11,6 +11,8 @@ This tools goal is mainly a good visual overview with an easy-to-use GUI.
 
 .. image:: https://github.com/davidhalter/furlough/raw/master/example.png
 
+Code available on `github <https://github.com/davidhalter/furlough>`_.
+
 
 Install
 =======
