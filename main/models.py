@@ -143,3 +143,7 @@ class Offtime(models.Model):
 
     def from_to_str(self):
         return "from %s to %s" % (date(self.start_date), date(self.end_date))
+
+    def __repr__(self):
+        return "<%s: %s, %s>" % (self.__class__.__name__, self.type.type,
+                                self.from_to_str())
