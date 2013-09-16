@@ -49,8 +49,8 @@ class TestModels(TestCase):
     added_date = models.DateTimeField(auto_now_add=True, blank=True)
         """
         person = models.Person.objects.get(pk=1)
-        start = datetime(2013, 6, 10)
-        stop = datetime(2013, 6, 17)
+        start = datetime(2014, 6, 10)
+        stop = datetime(2014, 6, 17)
         vacation = models.OfftimeType.objects.get(
                                     type_choice=models.OfftimeType.VACATION)
         offtime = models.Offtime(person=person, type=vacation,

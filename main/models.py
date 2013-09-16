@@ -78,7 +78,6 @@ class VacationPeriod(object):
         self.unaccepted = 0
         for v in vacations:
             days = (v.end_date - v.start_date).days
-            print 'x', start, type(start), v.start_date
             # vacation year break stuff
             if v.start_date < start:
                 days -= (start - v.start_date).days
