@@ -38,16 +38,6 @@ class TestModels(TestCase):
         self.assertEqual(v.unaccepted, 0)
 
     def test_multi_vacation_periods(self):
-        """
-    person = models.ForeignKey(Person)
-    type = models.ForeignKey(OfftimeType, on_delete=models.PROTECT)
-    start_date = models.DateTimeField()
-    end_date = models.DateTimeField()
-    accepted = models.BooleanField(default=False)
-    comment = models.TextField(blank=True)
-    deleted = models.BooleanField(default=False)
-    added_date = models.DateTimeField(auto_now_add=True, blank=True)
-        """
         person = models.Person.objects.get(pk=1)
         start = datetime(2014, 6, 10)
         stop = datetime(2014, 6, 17)
