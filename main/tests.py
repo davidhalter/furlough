@@ -28,7 +28,14 @@ class TestModels(TestCase):
         v = get_vacation_period()
         assert v.benefit == models.VACATION_PER_YEAR
         self.assertEqual(v.used, 16)
+        assert vacations[0].accepted == False
         self.assertEqual(v.unaccepted, 16)
+
+        vacations[0].accepted = True
+        vacations[0].save()
+        v = get_vacation_period()
+        self.assertEqual(v.used, 16)
+        self.assertEqual(v.unaccepted, 0)
 
 
 class TestForms(TestCase):
