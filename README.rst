@@ -13,4 +13,11 @@ This tools goal is mainly a good visual overview with an easy-to-use GUI.
 Install
 =======
 
+Caveats
+=======
 
+Knowing that the year doesn't have 365 days always, vacation days are still
+calculated with that idea in mind. Calculating vacation without fixed ending
+years is quite complicated, so it might happen that the vacation year has a 
+different start due to leap years (which probably won't be a problem, since
+furloughs are typically being used every 2-4 years).
