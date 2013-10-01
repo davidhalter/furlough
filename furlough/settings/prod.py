@@ -3,9 +3,6 @@
 
 from os import environ
 
-from memcacheify import memcacheify
-from postgresify import postgresify
-
 from common import *
 
 
@@ -37,13 +34,22 @@ SERVER_EMAIL = EMAIL_HOST_USER
 
 
 ########## DATABASE CONFIGURATION
-DATABASES = postgresify()
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'furlough',
+        'USER': 'furlough',
+        'PASSWORD': 'furlough',
+        'HOST': '',
+        'PORT': '',
+    }
+}
 ########## END DATABASE CONFIGURATION
 
 
 ########## CACHE CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#caches
-CACHES = memcacheify()
+#CACHES = memcacheify()
 ########## END CACHE CONFIGURATION
 
 
