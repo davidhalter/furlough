@@ -17,7 +17,10 @@ Code available on `github <https://github.com/davidhalter/furlough>`_.
 Install
 =======
 
-To be discussed... (probably use gunicorn)
+Install `depl <https://github.com/davidhalter/depl>`_ to deploy and then just
+use `depl deploy <host>`. You can also do this the "typical" way and setup all
+the dependencies yourself. But that sucks ass :-)
+
 
 Caveats
 =======
