@@ -40,7 +40,7 @@ DATABASES = {
         'NAME': 'furlough',
         'USER': 'furlough',
         'PASSWORD': 'furlough',
-        'HOST': '',
+        'HOST': '127.0.0.1',
         'PORT': '',
     }
 }
