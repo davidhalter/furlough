@@ -1,5 +1,4 @@
 -r common.txt
 cssmin==0.1.4
 jsmin==2.0.2
-django-storages==1.1.4
 psycopg2==2.4.5

@@ -80,13 +80,6 @@ CELERY_RESULT_BACKEND = 'amqp'
 ########## END CELERY CONFIGURATION
 
 
-########## STORAGE CONFIGURATION
-# See: http://django-storages.readthedocs.org/en/latest/index.html
-INSTALLED_APPS += (
-    'storages',
-)
-
-
 ########## COMPRESSION CONFIGURATION
 # See: http://django_compressor.readthedocs.org/en/latest/settings/#django.conf.settings.COMPRESS_OFFLINE
 COMPRESS_OFFLINE = True
