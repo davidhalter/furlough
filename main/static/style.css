@@ -88,6 +88,9 @@ div.maybe {
 div.timeline_hidden {
     display: None;
 }
+div.timeline_unapproved {
+    background: gray;
+}
 
 /* fix for wrong timeline paths */
 
