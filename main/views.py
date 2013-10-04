@@ -71,7 +71,7 @@ class OfftimeForm(forms.ModelForm):
 
     class Meta:
         model = models.Offtime
-        fields = 'person', 'type', 'start_date', 'end_date', 'accepted', 'comment'
+        fields = 'person', 'type', 'start_date', 'end_date', 'approved', 'comment'
 
 
 class ColorInput(forms.TextInput):
@@ -94,7 +94,7 @@ def timeline_json(request):
         for o in person.offtimes():
             t = add_offtime_type(o.type)
             tup = (o.pk, t, o.start_date.strftime('%Y-%m-%d %H:%M:%S'),
-                   o.end_date.strftime('%Y-%m-%d %H:%M:%S'), o.accepted,
+                   o.end_date.strftime('%Y-%m-%d %H:%M:%S'), o.approved,
                    o.deleted)
             offtimes.append(tup)
         return offtimes
@@ -131,9 +131,9 @@ def offtime(request, offtime_id, action=None):
     offtime = models.Offtime.objects.get(pk=offtime_id)
     if action is not None:
         if action == 'accept':
-            offtime.accepted = True
+            offtime.approved = True
         elif action == 'unaccept':
-            offtime.accepted = False
+            offtime.approved = False
         elif action == 'delete':
             offtime.deleted = True
         elif action == 'undelete':
@@ -148,7 +148,7 @@ def person_detail(request, person_id):
 
     context = {
         'person': person,
-        'unaccepted_offtimes': person.offtimes().filter(accepted=False)
+        'unapproved_offtimes': person.offtimes().filter(approved=False)
     }
 
     return render(request, 'person_detail.html', context,

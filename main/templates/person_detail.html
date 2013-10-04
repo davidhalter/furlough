@@ -9,7 +9,7 @@
             and {{ vacation_period.end | date }},
             you can book <b>{{ vacation_period.benefit }} days</b>.
             Of those, you booked <b>{{ vacation_period.used }} days</b>
-            ({{ vacation_period.unaccepted }} not yet accepted).
+            ({{ vacation_period.unapproved }} not yet approved).
         </li>
     {% endfor %}
     </ul>
@@ -22,14 +22,14 @@
 
 <h4>Waiting for Approval</h4>
 <ul>
-    {% for o in unaccepted_offtimes %}
+    {% for o in unapproved %}
         <li><b>{{ o.type }}</b>
             <a href='#' onclick='return replace_offtime({{ o.pk }})'>
                 {{ o.from_to_str }}
             </a>
         </li>
     {% empty %}
-        <li class="text-success">{{ person }} has no unaccepted offtime requests.</li>
+        <li class="text-success">{{ person }} has no unapproved offtime requests.</li>
     {% endfor %}
 </ul>
 

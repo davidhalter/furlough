@@ -15,4 +15,4 @@
   fields:
     name: Vacation
     color: "#CC3355"
-    type_choice: untracked
+    type_choice: vacation

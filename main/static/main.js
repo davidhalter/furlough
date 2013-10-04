@@ -152,7 +152,7 @@ function drawVisualization() {
 function fill_timeline(data){
     OFFTIME_TYPE_STR = 'timeline_offtime_type_'
 
-    function add_offtime(person_id, name, offtime_id, offtime_type_id, start, end, accepted, deleted){
+    function add_offtime(person_id, name, offtime_id, offtime_type_id, start, end, approved, deleted){
         is_group = (person_id == -1)
         var class_name = offtime_id == -1 ? 'timeline_hidden' : OFFTIME_TYPE_STR + offtime_type_id;
         var content_name = offtime_id == -1 ? '' : data['offtime_types'][offtime_type_id][0];
@@ -195,9 +195,9 @@ function fill_timeline(data){
                     var offtime_type_id = offtime_tup[1];
                     var start = new Date(offtime_tup[2]);
                     var end = new Date(offtime_tup[3]);
-                    var accepted = new Date(offtime_tup[4]);
+                    var approved = new Date(offtime_tup[4]);
                     var deleted = new Date(offtime_tup[5]);
-                    add_offtime(person_id, person_name, offtime_id, offtime_type_id, start, end, accepted, deleted);
+                    add_offtime(person_id, person_name, offtime_id, offtime_type_id, start, end, approved, deleted);
                 });
                 if (!offtimes.length){
                     add_offtime(person_id, person_name, -1, -1, date, date, true, false);

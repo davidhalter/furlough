@@ -75,7 +75,7 @@ class VacationPeriod(object):
                             start_date__lt=end,
                             )
         self.used = 0
-        self.unaccepted = 0
+        self.unapproved = 0
         for v in vacations:
             days = (v.end_date - v.start_date).days
             # vacation year break stuff
@@ -83,8 +83,8 @@ class VacationPeriod(object):
                 days -= (start - v.start_date).days
             if v.end_date > end:
                 days -= (v.end_date - end).days
-            if not v.accepted:
-                self.unaccepted += days
+            if not v.approved:
+                self.unapproved += days
             self.used += days
 
 
@@ -137,7 +137,7 @@ class Offtime(models.Model):
     type = models.ForeignKey(OfftimeType, on_delete=models.PROTECT)
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
-    accepted = models.BooleanField(default=False)
+    approved = models.BooleanField(default=False)
     comment = models.TextField(blank=True)
     deleted = models.BooleanField(default=False)
     added_date = models.DateTimeField(auto_now_add=True, blank=True)

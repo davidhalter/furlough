@@ -28,14 +28,14 @@ class TestModels(TestCase):
         v = get_vacation_period()
         assert v.benefit == models.VACATION_PER_YEAR
         self.assertEqual(v.used, 16)
-        assert vacations[0].accepted == False
-        self.assertEqual(v.unaccepted, 16)
+        assert vacations[0].approved == False
+        self.assertEqual(v.unapproved, 16)
 
-        vacations[0].accepted = True
+        vacations[0].approved = True
         vacations[0].save()
         v = get_vacation_period()
         self.assertEqual(v.used, 16)
-        self.assertEqual(v.unaccepted, 0)
+        self.assertEqual(v.unapproved, 0)
 
     def test_multi_vacation_periods(self):
         person = models.Person.objects.get(pk=1)
