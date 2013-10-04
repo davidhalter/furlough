@@ -93,8 +93,8 @@ def timeline_json(request):
         offtimes = []
         for o in person.offtimes():
             t = add_offtime_type(o.type)
-            tup = (o.pk, t, o.start_date.strftime('%Y-%m-%d %H:%M:%S'),
-                   o.end_date.strftime('%Y-%m-%d %H:%M:%S'), o.approved,
+            tup = (o.pk, t, o.start_date.strftime('%Y-%m-%dT%H:%M:%S'),
+                   o.end_date.strftime('%Y-%m-%dT%H:%M:%S'), o.approved,
                    o.deleted)
             offtimes.append(tup)
         return offtimes
