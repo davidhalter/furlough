@@ -1,5 +1,6 @@
 import json
 from datetime import timedelta
+from collections import OrderedDict
 
 from django.shortcuts import render, render_to_response, redirect
 from django.http import HttpResponse
@@ -118,6 +119,8 @@ def timeline_json(request):
 
         persons[person.pk] = [person.name, add_offtimes(person)]
 
+    # sort capabilities in an ordered dict
+    capabilities = OrderedDict(sorted(capabilities.items(), key=lambda t: t[0]))
     content = {
         'persons': persons,
         'capabilities': capabilities,
