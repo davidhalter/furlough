@@ -6,7 +6,7 @@ from django.forms import ValidationError
 from django.template.defaultfilters import date
 
 
-VACATION_PER_YEAR = 20
+VACATION_PER_YEAR = 25
 
 def vacation_days(start_date, end_date):
     return int((end_date - start_date).days/365.0*20)
