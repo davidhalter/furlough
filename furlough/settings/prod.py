@@ -6,6 +6,9 @@ from os import environ
 from common import *
 
 
+# Allow all hosts and let nginx do the mapping.
+ALLOWED_HOSTS = ['*']
+
 ########## EMAIL CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
