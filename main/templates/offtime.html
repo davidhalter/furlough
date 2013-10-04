@@ -5,9 +5,9 @@
 <p>{{ offtime.from_to_str | capfirst }}</p>
 
 {% if offtime.approved %}
-    <button class="btn btn-success" onclick="replace_offtime({{ offtime.id }}, 'unaccept')">Unaccept</button>
+    <button class="btn btn-success" onclick="replace_offtime({{ offtime.id }}, 'unaccept')">Unapprove</button>
 {% else %}
-    <button class="btn btn-success" onclick="replace_offtime({{ offtime.id }}, 'accept')">Accept</button>
+    <button class="btn btn-success" onclick="replace_offtime({{ offtime.id }}, 'accept')">Approve</button>
 {% endif %}
 
 
