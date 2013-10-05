@@ -4,6 +4,7 @@
 var timeline = undefined;
 var timeline_data = undefined;
 var timeline_last_request = undefined;
+var edit_offtime_id = undefined;
 
 if (google !== undefined){
     google.load("visualization", "1");
@@ -56,13 +57,19 @@ function setDatePicker(){
 
 function addOfftime(clean){
     if (clean == true){
-        $.get('/add_offtime.html', function(data) {
+        $.get('/ajax/add_offtime.html', function(data) {
+            edit_offtime_id = undefined;
             $('#addOfftime div.modal-body').html(data);
             setDatePicker();
         });
     }else{
         var input = $('#addOfftime form').serialize();
-        $.post('/add_offtime.html', input, function(data) {
+        if (edit_offtime_id == undefined){
+            url = '/ajax/add_offtime.html'
+        }else{
+            url = '/ajax/edit_offtime/' + edit_offtime_id + '.html'
+        }
+        $.post(url, input, function(data) {
             if (data == null){
                 $('#addOfftime').modal('hide')
                 addOfftime(true)
@@ -72,6 +79,15 @@ function addOfftime(clean){
             }
         });
     }
+}
+
+function editOfftime(id){
+    $.get('/ajax/edit_offtime/' + id + '.html', function(data) {
+        edit_offtime_id = id;
+        $('#addOfftime div.modal-body').html(data);
+        $('#addOfftime').modal('show')
+        setDatePicker();
+    });
 }
 
 /*

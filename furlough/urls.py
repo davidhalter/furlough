@@ -26,6 +26,6 @@ urlpatterns = patterns('',
     url(r'^(person|settings)/(capability|offtime_type|person)/(edit|delete)/(\d+)\.html$',
         'main.views.change_api'),
     url(r'^person_capability/delete/p(\d+)c(\d+)$', 'main.views.delete_person_capability'),
-    url(r'^add_offtime.html$', 'main.views.add_offtime'),
+    url(r'^ajax/add_offtime.html$', 'main.views.modify_offtime'),
+    url(r'^ajax/edit_offtime/(\d+).html$', 'main.views.modify_offtime'),
 )
-

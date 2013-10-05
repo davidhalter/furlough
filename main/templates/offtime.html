@@ -2,6 +2,9 @@
     "{{ offtime.type }}"{% if not offtime.approved %}-Request{% endif %} of
     {{ offtime.person }}
 </h3>
+{% if offtime.comment %}
+    <p style='font-style: italic'>{{ offtime.comment }}</p>
+{% endif %}
 <p>{{ offtime.from_to_str | capfirst }}</p>
 
 {% if offtime.approved %}
@@ -16,3 +19,5 @@
 {% else %}
     <button class="btn btn-danger" onclick="replace_offtime({{ offtime.id }}, 'delete')">Delete</button>
 {% endif %}
+
+<button class="btn btn-warning" onclick="editOfftime({{ offtime.id }})">Edit</button>

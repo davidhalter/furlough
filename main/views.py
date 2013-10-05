@@ -94,7 +94,7 @@ def timeline_json(request):
         offtimes = []
         for o in person.offtimes():
             t = add_offtime_type(o.type)
-            tup = o.pk, t, o.start_date.isoformat(), o.end_date.isoformat(), o.approved
+            tup = (o.pk, t, o.start_date.isoformat(), o.end_date.isoformat(), o.approved)
             offtimes.append(tup)
         return offtimes
 
@@ -248,14 +248,15 @@ def delete_person_capability(request, person_id, capability_id):
     return redirect('person')
 
 
-def add_offtime(request):
+def modify_offtime(request, edit_id=None):
+    instance = models.Offtime.objects.get(pk=edit_id) if edit_id else None
     if request.method == 'POST':
-        f = OfftimeForm(request.POST)
+        f = OfftimeForm(request.POST, instance=instance)
         if f.is_valid():
             f.save()
             return HttpResponse('', mimetype="application/json")
     else:
-        f = OfftimeForm()
+        f = OfftimeForm(instance=instance)
 
     return render_to_response('offtime_form_modal.html', {'offtime_form': f},
                               context_instance=RequestContext(request))
