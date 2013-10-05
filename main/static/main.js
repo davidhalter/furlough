@@ -15,14 +15,16 @@ if (google !== undefined){
 $(document).ready(function(){
     if ($('#mytimeline').length != 0){
         $(window).resize(function(){
+            /*
             $('#content').height( $(window).height() - $(".navbar").height() 
                             - parseInt($(".navbar").css("margin-bottom"))
                             - parseInt($(".navbar").css("margin-top")) 
                             - parseInt($('#content').css("margin-bottom"))
                             - parseInt($('#content').css("margin-top"))
                             );  
+            */
         });
-        $(window).resize();
+        //$(window).resize();
 
         setDatePicker();
     }
@@ -105,7 +107,8 @@ function drawVisualization() {
     // specify options
     var options = {
         width:  "99%",
-        height: "99%",
+        height: "auto",
+        minHeight: 400,
         layout: "box",
         axisOnTop: true,
         eventMargin: 4,  // minimal margin between events
