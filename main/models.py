@@ -1,5 +1,5 @@
 import re
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 from django.db import models
 from django.forms import ValidationError
@@ -62,6 +62,9 @@ class Person(models.Model):
     def vacation_periods(self):
         return [VacationPeriod(self, s,e)
                 for s, e in self._vacation_period_dates()]
+
+    def vacation_periods_active(self):
+        return [v for v in self.vacation_periods() if v.end > datetime.now()]
 
 
 class VacationPeriod(object):

@@ -147,6 +147,7 @@ def offtime(request, offtime_id, action=None):
 def person_detail(request, person_id):
     person = models.Person.objects.get(pk=person_id)
 
+    # Only show vacation periods that are now enough.
     context = {
         'person': person,
         'unapproved_offtimes': person.offtimes().filter(approved=False)

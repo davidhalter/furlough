@@ -1,9 +1,9 @@
 <h3>{{ person }}</h3>
 
-{% if person.vacation_periods %} 
+{% if person.vacation_periods_active %}
     Vacation days available: 
     <ul>
-    {% for vacation_period in person.vacation_periods %}
+    {% for vacation_period in person.vacation_periods_active %}
         <li>
             Between {{ vacation_period.start | date }}
             and {{ vacation_period.end | date }},
