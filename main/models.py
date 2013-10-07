@@ -40,7 +40,7 @@ class Person(models.Model):
 
     def _vacation_period_dates(self):
         furloughs = \
-                self.offtimes().filter(type__type_choice=OfftimeType.FURLOUGH)
+                self.offtimes().filter(type__type_choice=OfftimeType.FURLOUGH).order_by('start_date')
         if not furloughs:
             return []
         last_date = self.offtimes().latest('end_date').end_date
