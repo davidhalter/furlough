@@ -6,10 +6,12 @@ from django.forms import ValidationError
 from django.template.defaultfilters import date
 
 
+# options: 'islamic' (thursday/friday), 'western' (saturday/sunday), None (no weekend)
+WEEKEND_TYPE = 'islamic'
 VACATION_PER_YEAR = 25
 
 def vacation_days(start_date, end_date):
-    return int((end_date - start_date).days/365.0*20)
+    return int((end_date - start_date).days/365.0*VACATION_PER_YEAR)
 
 
 class ColorField(models.CharField):
@@ -69,6 +71,18 @@ class Person(models.Model):
 
 class VacationPeriod(object):
     def __init__(self, person, start, end):
+        def weekend_days(start, end):
+            day = start
+            result = 0
+            while day < end:
+                day += timedelta(1)
+                if WEEKEND_TYPE == 'islamic':
+                    if day.weekday() in (3, 4):
+                        result += 1
+                elif WEEKEND_TYPE == 'western':
+                    if day.weekday() in (5, 6):
+                        result += 1
+            return result
         self.start = start
         self.end = end
         self.benefit = vacation_days(start, end)
@@ -88,7 +102,7 @@ class VacationPeriod(object):
                 days -= (v.end_date - end).days
             if not v.approved:
                 self.unapproved += days
-            self.used += days
+            self.used += days - weekend_days(v.start_date, v.end_date)
 
 
 class Capability(models.Model):

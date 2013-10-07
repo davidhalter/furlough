@@ -11,6 +11,8 @@ from django.test import TestCase
 
 from . import models
 
+models.WEEKEND_TYPE = None  # disable the weekend type calculation
+
 
 class TestModels(TestCase):
     fixtures = ['darth.yaml']
@@ -24,9 +26,9 @@ class TestModels(TestCase):
         person = models.Person.objects.get(pk=1)
         vacations = person.offtimes().filter(type__type_choice=models.OfftimeType.VACATION)
         assert vacations
-        # A whole year should make a benefit of 20 days.
+        # A whole year should make a benefit of ``models.VACATION_PER_YEAR``
         v = get_vacation_period()
-        assert v.benefit == models.VACATION_PER_YEAR
+        self.assertEqual(v.benefit, models.VACATION_PER_YEAR)
         self.assertEqual(v.used, 16)
         assert vacations[0].approved == False
         self.assertEqual(v.unapproved, 16)
