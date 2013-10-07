@@ -5,6 +5,7 @@ var timeline = undefined;
 var timeline_data = undefined;
 var timeline_last_request = undefined;
 var edit_offtime_id = undefined;
+var hidden_capabilities = {}
 
 if (google !== undefined){
     google.load("visualization", "1");
@@ -171,7 +172,10 @@ function drawVisualization() {
 function fill_timeline(data){
     OFFTIME_TYPE_STR = 'timeline_offtime_type_'
 
-    function add_offtime(person_id, name, offtime_id, offtime_type_id, start, end, approved){
+    function add_offtime(person_id, name, offtime_id, offtime_type_id, start, end, approved, cap_name){
+        if (cap_name in hidden_capabilities){
+            return
+        }
         is_group = (person_id == -1)
         if (approved){
             var class_name = offtime_id == -1 ? 'timeline_hidden' : OFFTIME_TYPE_STR + offtime_type_id;
@@ -188,7 +192,13 @@ function fill_timeline(data){
         }
         var group = '<div class="timeline_hidden">' + pad(counter, 5) + '</div>';
         if (is_group){
-            group = group + '<b>' + name + '</b>';
+            var hider = '-';
+            if (name in hidden_capabilities){
+                hider = '+';
+            }
+            hider = '<a class="minimize_cap" href="#" onclick="return toggle_capability(this, \''
+                    + name + '\')">[' + hider + ']</a>';
+            group = group + hider + '<b>' + name + '</b>';
         }else{
             group = group + '<a href="#" onclick="return show_person_detail(' + person_id + ')">' + name + '</a>';
         }
@@ -219,10 +229,10 @@ function fill_timeline(data){
                     var start = new Date(offtime_tup[2]);
                     var end = new Date(offtime_tup[3]);
                     var approved = offtime_tup[4];
-                    add_offtime(person_id, person_name, offtime_id, offtime_type_id, start, end, approved);
+                    add_offtime(person_id, person_name, offtime_id, offtime_type_id, start, end, approved, cap_name);
                 });
                 if (!offtimes.length){
-                    add_offtime(person_id, person_name, -1, -1, date, date, true, false);
+                    add_offtime(person_id, person_name, -1, -1, date, date, true, cap_name);
                 }
                 counter += 1;
             });
@@ -240,6 +250,16 @@ function fill_timeline(data){
     });
 }
 
+
+function toggle_capability(element, name){
+    if (name in hidden_capabilities){
+        delete hidden_capabilities[name];
+    }else{
+        hidden_capabilities[name] = null;
+    }
+    fill_timeline(JSON.parse(timeline_last_request));
+    return false;
+}
 
 function show_person_detail(person_id){
     $.get('/ajax/person_detail/' + person_id + '.html', function(data) {

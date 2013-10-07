@@ -106,3 +106,7 @@ div.timeline-navigation-move-left {
 div.timeline-navigation-move-right {
     background: url('/static/timeline/img/16/moveright.png') no-repeat center;
 }
+
+a.minimize_cap {
+    color: red;
+}
