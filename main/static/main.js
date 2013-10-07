@@ -177,12 +177,15 @@ function fill_timeline(data){
             return
         }
         is_group = (person_id == -1)
-        if (approved){
+        var content_name = offtime_id == -1 ? '' : data['offtime_types'][offtime_type_id][0];
+        if (is_group){
+            var class_name = 'timeline_group_element'
+            content_name = '&nbsp;'
+        } else if (approved){
             var class_name = offtime_id == -1 ? 'timeline_hidden' : OFFTIME_TYPE_STR + offtime_type_id;
         }else{
             var class_name = 'timeline_unapproved'
         }
-        var content_name = offtime_id == -1 ? '' : data['offtime_types'][offtime_type_id][0];
 
         function pad(num, size) {
             // add leading zeros
@@ -216,8 +219,8 @@ function fill_timeline(data){
     var counter = 0
     $.each(data['capabilities'], function(cap_name, persons) {
         if (persons.length){
-            var date = new Date(1, 01, 01);
-            add_offtime(-1, cap_name, -1, -1, date, date, true, false);
+            var date = new Date(-2500, 0, 1);
+            add_offtime(-1, cap_name, -1, -1, date, new Date(8000, 0, 1), true);
             counter += 1;
             $.each(persons, function(i, person_id) {
                 var person_tup = data['persons'][person_id];

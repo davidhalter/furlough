@@ -88,6 +88,10 @@ div.maybe {
 div.timeline_hidden {
     display: None;
 }
+div.timeline_group_element {
+    background-color: #333333;
+    border-color: #333333;
+}
 div.timeline_unapproved {
     background: gray;
 }
