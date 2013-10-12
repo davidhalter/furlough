@@ -10,6 +10,7 @@ from datetime import datetime
 from django.test import TestCase
 
 from . import models
+from . import views
 
 models.WEEKEND_TYPE = None  # disable the weekend type calculation
 
@@ -57,5 +58,46 @@ class TestModels(TestCase):
 
 
 
-class TestForms(TestCase):
-    pass
+class TestOfftimeValidation(TestCase):
+    fixtures = ['darth.yaml']
+
+    def add_vacation(self, start, end):
+        person = models.Person.objects.get(pk=1)
+        vacation = models.OfftimeType.objects.get(
+                                    type_choice=models.OfftimeType.VACATION)
+        offtime = models.Offtime(person=person, type=vacation,
+                                 start_date=start, end_date=end)
+        offtime.save()
+        return offtime
+
+    def test_offtime_form(self):
+        # furlough: 2013-06-12 - 2013-09-15
+        form_data = {
+            'person': 1,
+            'type': 1,
+            'start_date': datetime(2013, 10, 02),
+            'end_date': datetime(2013, 10, 02),
+        }
+        assert views.OfftimeForm(form_data).is_valid() == True
+        form_data['start_date'] = datetime(2013, 9, 02)
+        assert views.OfftimeForm(form_data).is_valid() == False
+        form_data['start_date'] = datetime(2013, 5, 02)
+        assert views.OfftimeForm(form_data).is_valid() == False
+        form_data['end_date'] = datetime(2013, 5, 02)
+        assert views.OfftimeForm(form_data).is_valid() == True
+
+    def test_offtime_form_with_instance(self):
+        off = self.add_vacation(datetime(2013, 10, 02), datetime(2013, 11, 2))
+        form_data = {
+            'person': 1,
+            'type': 1,
+            'start_date': datetime(2013, 10, 02),
+            'end_date': datetime(2013, 10, 02),
+        }
+        assert views.OfftimeForm(form_data, instance=off).is_valid() == True
+        form_data['start_date'] = datetime(2013, 9, 02)
+        assert views.OfftimeForm(form_data, instance=off).is_valid() == False
+        form_data['start_date'] = datetime(2013, 5, 02)
+        assert views.OfftimeForm(form_data, instance=off).is_valid() == False
+        form_data['end_date'] = datetime(2013, 5, 02)
+        assert views.OfftimeForm(form_data, instance=off).is_valid() == True
