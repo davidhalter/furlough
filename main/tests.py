@@ -71,33 +71,17 @@ class TestOfftimeValidation(TestCase):
         return offtime
 
     def test_offtime_form(self):
-        # furlough: 2013-06-12 - 2013-09-15
+        # vacation: 2013-09-08 - 2013-09-24
         form_data = {
             'person': 1,
             'type': 1,
-            'start_date': datetime(2013, 10, 02),
-            'end_date': datetime(2013, 10, 02),
+            'start_date': datetime(2013, 9, 27),
+            'end_date': datetime(2013, 9, 29),
         }
         assert views.OfftimeForm(form_data).is_valid() == True
-        form_data['start_date'] = datetime(2013, 9, 02)
+        form_data['start_date'] = datetime(2013, 9, 25)
         assert views.OfftimeForm(form_data).is_valid() == False
-        form_data['start_date'] = datetime(2013, 5, 02)
+        form_data['start_date'] = datetime(2013, 9, 2)
         assert views.OfftimeForm(form_data).is_valid() == False
-        form_data['end_date'] = datetime(2013, 5, 02)
+        form_data['end_date'] = datetime(2013, 9, 5)
         assert views.OfftimeForm(form_data).is_valid() == True
-
-    def test_offtime_form_with_instance(self):
-        off = self.add_vacation(datetime(2013, 10, 02), datetime(2013, 11, 2))
-        form_data = {
-            'person': 1,
-            'type': 1,
-            'start_date': datetime(2013, 10, 02),
-            'end_date': datetime(2013, 10, 02),
-        }
-        assert views.OfftimeForm(form_data, instance=off).is_valid() == True
-        form_data['start_date'] = datetime(2013, 9, 02)
-        assert views.OfftimeForm(form_data, instance=off).is_valid() == False
-        form_data['start_date'] = datetime(2013, 5, 02)
-        assert views.OfftimeForm(form_data, instance=off).is_valid() == False
-        form_data['end_date'] = datetime(2013, 5, 02)
-        assert views.OfftimeForm(form_data, instance=off).is_valid() == True
