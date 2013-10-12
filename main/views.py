@@ -7,10 +7,24 @@ from django.http import HttpResponse
 from django import forms
 from django.template import RequestContext
 from django.db.models import ProtectedError
+from django.forms.widgets import TextInput
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 
 from . import models
+
+
+class DateWidget(TextInput):
+    """Changes a datetime to a date"""
+    def _format_value(self, value):
+        value = value.date()
+        return super(DateWidget, self)._format_value(value)
+
+
+class EndDateWidget(TextInput):
+    def _format_value(self, value):
+        value = (value - timedelta(1)).date()
+        return super(EndDateWidget, self)._format_value(value)
 
 
 class CapabilityForm(forms.ModelForm):
@@ -76,11 +90,6 @@ class OfftimeForm(forms.ModelForm):
         end = self.cleaned_data["end_date"]
         f = self.cleaned_data["person"].offtimes()
         f = f.exclude(pk=self.instance.id).filter
-        print 'X', 'Y', self.instance, self.instance.id
-        x = self.cleaned_data["person"].offtimes().exclude(pk=self.instance.id)
-        print x, x.filter(start_date__lte=start, end_date__gt=start), \
-                 x.filter(start_date__lt=end, end_date__gte=end), \
-                 x.filter(start_date__gt=start, end_date__lt=end)
         overlapping = f(start_date__lte=start, end_date__gt=start) \
                     | f(start_date__lt=end, end_date__gte=end) \
                     | f(start_date__gt=start, end_date__lt=end)
@@ -93,6 +102,7 @@ class OfftimeForm(forms.ModelForm):
     class Meta:
         model = models.Offtime
         fields = 'person', 'type', 'start_date', 'end_date', 'approved', 'comment'
+        widgets = {'start_date': DateWidget(), 'end_date': EndDateWidget()}
 
 
 class ColorInput(forms.TextInput):
