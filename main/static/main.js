@@ -71,6 +71,9 @@ function addOfftime(clean){
             url = '/ajax/edit_offtime/' + edit_offtime_id + '.html'
         }
         $.post(url, input, function(data) {
+            if (edit_offtime_id != undefined){
+                replace_offtime(edit_offtime_id);
+            }
             if (data == null){
                 $('#addOfftime').modal('hide')
                 addOfftime(true)
