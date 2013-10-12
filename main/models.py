@@ -159,8 +159,12 @@ class Offtime(models.Model):
     deleted = models.BooleanField(default=False)
     added_date = models.DateTimeField(auto_now_add=True, blank=True)
 
+    @property
+    def user_end_date(self):
+        return (self.end_date - timedelta(1)).date()
+
     def from_to_str(self):
-        return "from %s to %s" % (date(self.start_date), date(self.end_date))
+        return "from %s to %s" % (date(self.start_date), date(self.user_end_date))
 
     def __repr__(self):
         return "<%s: %s, %s>" % (self.__class__.__name__, self.type.type,

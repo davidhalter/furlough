@@ -68,7 +68,27 @@ class OfftimeForm(forms.ModelForm):
         if None not in (start_date, end_date) and end_date <= start_date:
             msg = u"End date should be greater than start date."
             self._errors["end_date"] = self.error_class([msg])
+        self._check_if_between_dates()
         return super(type(self), self).clean()
+
+    def _check_if_between_dates(self):
+        start = self.cleaned_data["start_date"]
+        end = self.cleaned_data["end_date"]
+        f = self.cleaned_data["person"].offtimes()
+        f = f.exclude(pk=self.instance.id).filter
+        print 'X', 'Y', self.instance, self.instance.id
+        x = self.cleaned_data["person"].offtimes().exclude(pk=self.instance.id)
+        print x, x.filter(start_date__lte=start, end_date__gt=start), \
+                 x.filter(start_date__lt=end, end_date__gte=end), \
+                 x.filter(start_date__gt=start, end_date__lt=end)
+        overlapping = f(start_date__lte=start, end_date__gt=start) \
+                    | f(start_date__lt=end, end_date__gte=end) \
+                    | f(start_date__gt=start, end_date__lt=end)
+
+        for offtime in overlapping:
+            msg = 'Dates are overlapping with an event from %s to %s.' \
+                    % (offtime.start_date.date(), offtime.end_date.date())
+            self._errors["start_date"] = self.error_class([msg])
 
     class Meta:
         model = models.Offtime

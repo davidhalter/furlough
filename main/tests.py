@@ -79,7 +79,7 @@ class TestOfftimeValidation(TestCase):
             'end_date': datetime(2013, 9, 29),
         }
         assert views.OfftimeForm(form_data).is_valid() == True
-        form_data['start_date'] = datetime(2013, 9, 25)
+        form_data['start_date'] = datetime(2013, 9, 22)
         assert views.OfftimeForm(form_data).is_valid() == False
         form_data['start_date'] = datetime(2013, 9, 2)
         assert views.OfftimeForm(form_data).is_valid() == False
