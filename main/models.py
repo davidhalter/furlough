@@ -1,4 +1,5 @@
 import re
+from itertools import chain
 from datetime import timedelta, date
 
 from django.db import models
@@ -119,6 +120,22 @@ class Capability(models.Model):
 
     def persons(self):
         return Person.objects.filter(personcapability__capability=self)
+
+
+def capability_available_dates(persons, iso_dates=False):
+    offtimes = chain.from_iterable(p.offtimes() for p in persons)
+    num_persons = len(persons)
+    dates = {o.start_date:num_persons for o in offtimes}
+    dates.update({o.end_date:num_persons for o in offtimes})
+
+    for offtime in offtimes:
+        dates[offtime.start_date] -= 1
+        dates[offtime.end_date] += 1
+    if iso_dates:
+        result = [(k.isoformat(), v) for k, v in dates.items()]
+    else:
+        result = [(k, v) for k, v in dates.items()]
+    return [(None, num_persons)] + result
 
 
 class PersonCapability(models.Model):

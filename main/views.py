@@ -142,11 +142,15 @@ def timeline_json(request):
         for c in caps:
             if c.name not in capabilities:
                 capabilities[c.name] = []
-            capabilities[c.name].append(person.pk)
+            capabilities[c.name].append(person)
         if not caps:
-            capabilities[NO_CAP].append(person.pk)
+            capabilities[NO_CAP].append(person)
 
-        persons[person.pk] = [person.name, add_offtimes(person)]
+        persons[person.pk] = person.name, add_offtimes(person)
+
+    for k, pers in capabilities.items():
+        capabilities[k] = [p.pk for p in pers], \
+                          models.capability_available_dates(pers, iso_dates=True)
 
     # sort capabilities in an ordered dict
     capabilities = OrderedDict(sorted(capabilities.items(), key=lambda t: t[0]))
