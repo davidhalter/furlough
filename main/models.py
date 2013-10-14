@@ -1,9 +1,9 @@
 import re
-from datetime import timedelta, datetime
+from datetime import timedelta, date
 
 from django.db import models
 from django.forms import ValidationError
-from django.template.defaultfilters import date
+from django.template.defaultfilters import date as django_date
 
 
 # options: 'islamic' (thursday/friday), 'western' (saturday/sunday), None (no weekend)
@@ -71,7 +71,7 @@ class Person(models.Model):
                 for s, e in self._vacation_period_dates()]
 
     def vacation_periods_active(self):
-        return [v for v in self.vacation_periods() if v.end > datetime.now()]
+        return [v for v in self.vacation_periods() if v.end > date.today()]
 
 
 class VacationPeriod(object):
@@ -88,6 +88,7 @@ class VacationPeriod(object):
                     if day.weekday() in (5, 6):
                         result += 1
             return result
+
         self.start = start.date()
         self.end = (end - timedelta(1)).date()
         self.benefit = vacation_days(start, end)
@@ -169,7 +170,7 @@ class Offtime(models.Model):
         return (self.end_date - timedelta(1)).date()
 
     def from_to_str(self):
-        return "from %s to %s" % (date(self.start_date), date(self.user_end_date))
+        return "from %s to %s" % (django_date(self.start_date), django_date(self.user_end_date))
 
     def __repr__(self):
         return "<%s: %s, %s>" % (self.__class__.__name__, self.type.type,

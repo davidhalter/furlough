@@ -20,7 +20,7 @@ class TestModels(TestCase):
 
     def test_vacation_periods(self):
         def get_vacation_period():
-            vacation_periods = person.vacation_periods()
+            vacation_periods = person.vacation_periods_active()
             assert len(vacation_periods) == 1
             return vacation_periods[0]
 
@@ -50,7 +50,7 @@ class TestModels(TestCase):
                                  start_date=start, end_date=stop)
         offtime.save()
 
-        vp = person.vacation_periods()
+        vp = person.vacation_periods_active()
         assert len(vp) == 2
         # until June 12th
         self.assertEqual(vp[0].used, 16 + 2)
