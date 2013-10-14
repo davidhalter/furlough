@@ -175,10 +175,9 @@ function fill_timeline(data){
             return
         }
         is_group = (person_id == -1)
-        var content_name = offtime_id == -1 ? '' : data['offtime_types'][offtime_type_id][0];
+        var content_name = offtime_id == -1 ? '' + offtime_type_id : data['offtime_types'][offtime_type_id][0];
         if (is_group){
             var class_name = 'timeline_group_element'
-            content_name = '&nbsp;'
         } else if (approved){
             var class_name = offtime_id == -1 ? 'timeline_hidden' : OFFTIME_TYPE_STR + offtime_type_id;
         }else{
@@ -215,10 +214,27 @@ function fill_timeline(data){
 
     // Create and populate a data table.
     var counter = 0
-    $.each(data['capabilities'], function(cap_name, persons) {
+    var date = new Date(-2500, 0, 1);
+    $.each(data['capabilities'], function(cap_name, dat) {
+        var persons = dat[0]
+        var cap_available_dates = dat[1]
         if (persons.length){
-            var date = new Date(-2500, 0, 1);
-            add_offtime(-1, cap_name, -1, -1, date, new Date(8000, 0, 1), true);
+            $.each(cap_available_dates, function(i, dat) {
+                var start = dat[0]
+                var num_per = dat[1]
+                if (start == 'null'){
+                    start = date;
+                }else{
+                    start = new Date(start);
+                }
+                var end = cap_available_dates[i + 1]
+                if (end == undefined){
+                    end = new Date(8000, 0, 1);
+                }else{
+                    end = new Date(end[0]);
+                }
+                add_offtime(-1, cap_name, -1, num_per, start, end, true);
+            });
             counter += 1;
             $.each(persons, function(i, person_id) {
                 var person_tup = data['persons'][person_id];
@@ -233,7 +249,7 @@ function fill_timeline(data){
                     add_offtime(person_id, person_name, offtime_id, offtime_type_id, start, end, approved, cap_name);
                 });
                 if (!offtimes.length){
-                    add_offtime(person_id, person_name, -1, -1, date, date, true, cap_name);
+                    add_offtime(person_id, person_name, -1, '', date, date, true, cap_name);
                 }
                 counter += 1;
             });

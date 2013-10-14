@@ -132,9 +132,9 @@ def capability_available_dates(persons, iso_dates=False):
         dates[offtime.start_date] -= 1
         dates[offtime.end_date] += 1
     if iso_dates:
-        result = [(k.isoformat(), v) for k, v in dates.items()]
+        result = [(k.isoformat(), v) for k, v in sorted(dates.items())]
     else:
-        result = [(k, v) for k, v in dates.items()]
+        result = [(k, v) for k, v in sorted(dates.items())]
     return [(None, num_persons)] + result
 
 
