@@ -11,10 +11,39 @@ from django.template.defaultfilters import date as django_date
 WEEKEND_TYPE = 'islamic'
 VACATION_PER_YEAR = 25
 
+
 def vacation_days(start_date, end_date):
     # end date is also included
     days = (end_date - start_date + timedelta(1)).days
     return int(round(days/365.0*VACATION_PER_YEAR))
+
+
+def capability_available_dates(persons, iso_dates=False):
+    def clean_duplicates(result):
+        # delete entries with the same number of persons
+        for i, (k, v) in enumerate(result):
+            for j, (k2, v2) in enumerate(result[i+1:], i+1):
+                if v != v2:
+                    break
+                del result[i+1]
+    offtimes = list(chain.from_iterable(p.offtimes() for p in persons))
+    num_persons = len(persons)
+    dates = {o.start_date:num_persons for o in offtimes}
+    dates.update({o.end_date:num_persons for o in offtimes})
+    dates_lst = sorted(dates)
+
+    x = dates_lst.index
+    for offtime in offtimes:
+        for _date in dates_lst[x(offtime.start_date):x(offtime.end_date)]:
+            dates[_date] -= 1
+
+    if iso_dates:
+        result = [(k.isoformat(), v) for k, v in sorted(dates.items())]
+    else:
+        result = [(k, v) for k, v in sorted(dates.items())]
+
+    clean_duplicates(result)
+    return [(None, num_persons)] + result
 
 
 class ColorField(models.CharField):
@@ -120,22 +149,6 @@ class Capability(models.Model):
 
     def persons(self):
         return Person.objects.filter(personcapability__capability=self)
-
-
-def capability_available_dates(persons, iso_dates=False):
-    offtimes = chain.from_iterable(p.offtimes() for p in persons)
-    num_persons = len(persons)
-    dates = {o.start_date:num_persons for o in offtimes}
-    dates.update({o.end_date:num_persons for o in offtimes})
-
-    for offtime in offtimes:
-        dates[offtime.start_date] -= 1
-        dates[offtime.end_date] += 1
-    if iso_dates:
-        result = [(k.isoformat(), v) for k, v in sorted(dates.items())]
-    else:
-        result = [(k, v) for k, v in sorted(dates.items())]
-    return [(None, num_persons)] + result
 
 
 class PersonCapability(models.Model):
