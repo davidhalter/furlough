@@ -44,7 +44,6 @@ class Person(models.Model):
 
     def _vacation_period_dates(self):
         def add(first, second):
-            second -= timedelta(1)
             result.append((first, second))
 
         result = []
@@ -80,7 +79,7 @@ class VacationPeriod(object):
         def weekend_days(start, end):
             day = start
             result = 0
-            while day < end:
+            while day <= end:
                 day += timedelta(1)
                 if WEEKEND_TYPE == 'islamic':
                     if day.weekday() in (3, 4):
@@ -89,8 +88,8 @@ class VacationPeriod(object):
                     if day.weekday() in (5, 6):
                         result += 1
             return result
-        self.start = start
-        self.end = end
+        self.start = start.date()
+        self.end = (end - timedelta(1)).date()
         self.benefit = vacation_days(start, end)
         vacations = person.offtimes().filter(
                             type__type_choice=OfftimeType.VACATION,
@@ -100,15 +99,15 @@ class VacationPeriod(object):
         self.used = 0
         self.unapproved = 0
         for v in vacations:
-            days = (v.end_date - v.start_date).days
             # vacation year break stuff
-            if v.start_date < start:
-                days -= (start - v.start_date).days
-            if v.end_date > end:
-                days -= (v.end_date - end).days
+            if v.end_date < start or v.start_date > end:
+                continue
+            s = start if v.start_date < start else v.start_date
+            e = end if v.end_date > end else v.end_date
+            days = (e - s).days - weekend_days(s, e)
+            self.used += days
             if not v.approved:
                 self.unapproved += days
-            self.used += days - weekend_days(v.start_date, v.end_date)
 
 
 class Capability(models.Model):
