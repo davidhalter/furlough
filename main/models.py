@@ -11,7 +11,9 @@ WEEKEND_TYPE = 'islamic'
 VACATION_PER_YEAR = 25
 
 def vacation_days(start_date, end_date):
-    return int((end_date - start_date).days/365.0*VACATION_PER_YEAR)
+    # end date is also included
+    days = (end_date - start_date + timedelta(1)).days
+    return int(round(days/365.0*VACATION_PER_YEAR))
 
 
 class ColorField(models.CharField):
@@ -41,8 +43,13 @@ class Person(models.Model):
         return Offtime.objects.filter(person=self, deleted=False)
 
     def _vacation_period_dates(self):
-        furloughs = \
-                self.offtimes().filter(type__type_choice=OfftimeType.FURLOUGH).order_by('start_date')
+        def add(first, second):
+            second -= timedelta(1)
+            result.append((first, second))
+
+        result = []
+        furloughs = self.offtimes() \
+            .filter(type__type_choice=OfftimeType.FURLOUGH).order_by('start_date')
         if not furloughs:
             return []
         last_date = self.offtimes().latest('end_date').end_date
@@ -50,15 +57,14 @@ class Person(models.Model):
                     [f.start_date for f in furloughs[1:]] + [None])
         YEAR = 365
         y = timedelta(YEAR)
-        result = []
         for first, second in dates:
             temp = second
             if second is None:
                 second = last_date
             while first + y < second:
-                result.append((first, first + y))
+                add(first, first + y)
                 first += y
-            result.append((first, temp or first + y))
+            add(first, temp or first + y)
         return result
 
     def vacation_periods(self):
