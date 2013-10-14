@@ -135,6 +135,7 @@ function drawVisualization() {
         eventMarginAxis: 0, // minimal margin beteen events and the axis
         editable: false,
         zoomMin: 1000 * 60 * 60 * 24 * 5, // minimal zoom: 5 days
+        zoomMax: 1000 * 60 * 60 * 24 * 365 * 50, // maximal zoom: 50 years
         showNavigation: true
     };
 
@@ -143,12 +144,6 @@ function drawVisualization() {
 
     // register event listeners
     google.visualization.events.addListener(timeline, 'select', select_timeline_object);
-
-    var now = new Date();
-    // Set a customized visible range
-    var start = new Date(now.getTime() - 4 * 60 * 60 * 1000);
-    var end = new Date(now.getTime() + 8 * 60 * 60 * 1000);
-    timeline.setVisibleChartRange(start, end);
 
     // Draw our timeline with the created data and options
     timeline.draw(timeline_data, options);
