@@ -24,8 +24,9 @@
     pk: 3
 # vacation
 -   fields: {approved: false, added_date: !!timestamp '2013-09-15 04:45:53.654614',
-        comment: Running a death star is hard work!, deleted: false, end_date: !!timestamp '2013-09-24
-            00:00:00', person: 1, start_date: !!timestamp '2013-09-08 00:00:00', type: 3}
+        comment: Running a death star is hard work!, deleted: false, 
+        end_date: !!timestamp '2013-09-22 00:00:00', person: 1, 
+        start_date: !!timestamp '2013-09-08 00:00:00', type: 3}
     model: main.offtime
     pk: 1
 # furlough

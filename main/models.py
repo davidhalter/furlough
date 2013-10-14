@@ -79,14 +79,14 @@ class VacationPeriod(object):
         def weekend_days(start, end):
             day = start
             result = 0
-            while day <= end:
-                day += timedelta(1)
+            while day < end:
                 if WEEKEND_TYPE == 'islamic':
                     if day.weekday() in (3, 4):
                         result += 1
                 elif WEEKEND_TYPE == 'western':
                     if day.weekday() in (5, 6):
                         result += 1
+                day += timedelta(1)
             return result
 
         self.start = start.date()

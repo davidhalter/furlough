@@ -30,20 +30,20 @@ class TestModels(TestCase):
         # A whole year should make a benefit of ``models.VACATION_PER_YEAR``
         v = get_vacation_period()
         self.assertEqual(v.benefit, models.VACATION_PER_YEAR)
-        self.assertEqual(v.used, 16)
+        self.assertEqual(v.used, 14)
         assert vacations[0].approved == False
-        self.assertEqual(v.unapproved, 16)
+        self.assertEqual(v.unapproved, 14)
 
         vacations[0].approved = True
         vacations[0].save()
         v = get_vacation_period()
-        self.assertEqual(v.used, 16)
+        self.assertEqual(v.used, 14)
         self.assertEqual(v.unapproved, 0)
 
     def test_multi_vacation_periods(self):
         person = models.Person.objects.get(pk=1)
         start = datetime(2014, 6, 10)
-        stop = datetime(2014, 6, 17)
+        stop = datetime(2014, 6, 19)
         vacation = models.OfftimeType.objects.get(
                                     type_choice=models.OfftimeType.VACATION)
         offtime = models.Offtime(person=person, type=vacation,
@@ -53,8 +53,16 @@ class TestModels(TestCase):
         vp = person.vacation_periods_active()
         assert len(vp) == 2
         # until June 12th
-        self.assertEqual(vp[0].used, 16 + 2)
-        self.assertEqual(vp[1].used, 5)
+        self.assertEqual(vp[0].used, 14 + 2)
+        self.assertEqual(vp[1].used, 7)
+
+        old, models.WEEKEND_TYPE = models.WEEKEND_TYPE, 'islamic'
+        try:
+            vp = person.vacation_periods_active()
+            self.assertEqual(vp[0].used, 10 + 2)
+            self.assertEqual(vp[1].used, 5)
+        finally:
+            models.WEEKEND_TYPE = old
 
 
 
@@ -79,7 +87,7 @@ class TestOfftimeValidation(TestCase):
             'end_date': datetime(2013, 9, 29),
         }
         assert views.OfftimeForm(form_data).is_valid() == True
-        form_data['start_date'] = datetime(2013, 9, 22)
+        form_data['start_date'] = datetime(2013, 9, 20)
         assert views.OfftimeForm(form_data).is_valid() == False
         form_data['start_date'] = datetime(2013, 9, 2)
         assert views.OfftimeForm(form_data).is_valid() == False
