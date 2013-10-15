@@ -19,6 +19,23 @@
                 </a>
             </li>
         </ul>
+        <ul class="nav pull-right">
+            {% if user.is_authenticated %}
+            <li>
+                <p class="navbar-text">
+                    <i class="icon-user"></i>
+                    {{ user.username }}
+                </p>
+            </li>
+            {% endif %}
+            <li>
+                {% if user.is_authenticated %}
+                    <a href="authentification/logout">Logout</a>
+                {% else %}
+                    <a href="authentification/login">Login</a>
+                {% endif %}
+            </li>
+        </ul>
       </div>
     </div>
   </div>
