@@ -3,7 +3,7 @@
     {{ offtime.person }}
 </h3>
 
-{% if not user.authenticated %}
+{% if not user.is_authenticated %}
 <div class="alert alert-warning">
     Please <a href='/access/login'>login</a> first if you want to change anything!
 </div>
