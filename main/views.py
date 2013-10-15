@@ -10,6 +10,7 @@ from django.db.models import ProtectedError
 from django.forms.widgets import TextInput
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
+from django.contrib.auth.decorators import login_required
 
 from . import models
 
@@ -162,6 +163,7 @@ def timeline_json(request):
     return HttpResponse(json.dumps(content), mimetype="application/json")
 
 
+@login_required
 def offtime(request, offtime_id, action=None):
     offtime = models.Offtime.objects.get(pk=offtime_id)
     if action is not None:
@@ -191,6 +193,7 @@ def person_detail(request, person_id):
                   context_instance=RequestContext(request))
 
 
+@login_required
 def person(request):
     form = PersonForm(request.POST or None)
     data = ((p, PersonCapabilityForm(initial={'person': p})) for p in
@@ -215,6 +218,7 @@ def person(request):
                   context_instance=RequestContext(request))
 
 
+@login_required
 def settings(request):
     context = {
         'capability_form': CapabilityForm(),
@@ -239,6 +243,7 @@ def settings(request):
                               context_instance=RequestContext(request))
 
 
+@login_required
 def change_api(request, origin, what, action, id):
     mapping = {
         'offtime_type': (models.OfftimeType, OfftimeTypeForm, 'Offtime Type'),
@@ -277,12 +282,14 @@ def change_api(request, origin, what, action, id):
                               context_instance=RequestContext(request))
 
 
+@login_required
 def delete_person_capability(request, person_id, capability_id):
     models.PersonCapability.objects.filter(person__pk=person_id,
                                        capability__pk=capability_id).delete()
     return redirect('person')
 
 
+@login_required
 def modify_offtime(request, edit_id=None):
     instance = models.Offtime.objects.get(pk=edit_id) if edit_id else None
     if request.method == 'POST':
