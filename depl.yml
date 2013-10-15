@@ -1,3 +1,6 @@
 deploy:
   - django:
       settings: furlough.settings.prod
+      admin:
+        user: root
+        email: root@localhost.localdomain
