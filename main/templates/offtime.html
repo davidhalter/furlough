@@ -2,6 +2,13 @@
     "{{ offtime.type }}"{% if not offtime.approved %}-Request{% endif %} of
     {{ offtime.person }}
 </h3>
+
+{% if not user.authenticated %}
+<div class="alert alert-warning">
+    Please <a href='/access/login'>login</a> first if you want to change anything!
+</div>
+{% endif %}
+
 {% if offtime.comment %}
     <p style='font-style: italic'>{{ offtime.comment }}</p>
 {% endif %}

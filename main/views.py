@@ -163,10 +163,9 @@ def timeline_json(request):
     return HttpResponse(json.dumps(content), mimetype="application/json")
 
 
-@login_required
 def offtime(request, offtime_id, action=None):
     offtime = models.Offtime.objects.get(pk=offtime_id)
-    if action is not None:
+    if action is not None and request.user.is_authenticated():
         if action == 'accept':
             offtime.approved = True
         elif action == 'unaccept':
