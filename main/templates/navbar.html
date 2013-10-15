@@ -30,9 +30,9 @@
             {% endif %}
             <li>
                 {% if user.is_authenticated %}
-                    <a href="authentification/logout">Logout</a>
+                    <a href="/accounts/logout">Logout</a>
                 {% else %}
-                    <a href="authentification/login">Login</a>
+                    <a href="/accounts/login">Login</a>
                 {% endif %}
             </li>
         </ul>
