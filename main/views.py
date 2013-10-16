@@ -1,5 +1,5 @@
 import json
-from datetime import timedelta
+from datetime import timedelta, datetime
 from collections import OrderedDict
 
 from django.shortcuts import render, render_to_response, redirect
@@ -18,13 +18,15 @@ from . import models
 class DateWidget(TextInput):
     """Changes a datetime to a date"""
     def _format_value(self, value):
-        value = value.date()
+        if isinstance(value, datetime):
+            value = value.date()
         return super(DateWidget, self)._format_value(value)
 
 
 class EndDateWidget(TextInput):
     def _format_value(self, value):
-        value = (value - timedelta(1)).date()
+        if isinstance(value, datetime):
+            value = (value - timedelta(1)).date()
         return super(EndDateWidget, self)._format_value(value)
 
 
