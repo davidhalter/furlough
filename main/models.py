@@ -198,6 +198,7 @@ class Offtime(models.Model):
     comment = models.TextField(blank=True)
     deleted = models.BooleanField(default=False)
     added_date = models.DateTimeField(auto_now_add=True, blank=True)
+    parent_offtime = models.ForeignKey('self', null=True)
 
     @property
     def user_end_date(self):
