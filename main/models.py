@@ -5,6 +5,7 @@ from datetime import timedelta, date
 from django.db import models
 from django.forms import ValidationError
 from django.template.defaultfilters import date as django_date
+from south.modelsinspector import add_introspection_rules
 
 
 # options: 'islamic' (thursday/friday), 'western' (saturday/sunday), None (no weekend)
@@ -51,6 +52,9 @@ class ColorField(models.CharField):
         if not re.match('#[\da-f]', value):
             raise ValidationError("Color doesn't have a valid hex code!")
         super(type(self), self).validate(value, model_instance)
+
+
+add_introspection_rules([], ["^main\.models\.ColorField"])
 
 
 class Person(models.Model):
