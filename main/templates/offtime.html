@@ -20,6 +20,7 @@
     </a></p>
 {% endif %}
 
+<p>
 {% if offtime.approved %}
     <button class="btn btn-success" onclick="replace_offtime({{ offtime.id }}, 'unaccept')">Unapprove</button>
 {% else %}
@@ -34,3 +35,10 @@
 {% endif %}
 
 <button class="btn btn-warning" onclick="editOfftime({{ offtime.id }})">Edit</button>
+</p>
+
+<p>
+    <button class="btn btn-warning" onclick="childOfftime({{ offtime.id }})">
+        Add child offtime
+    </button>
+</p>

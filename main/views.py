@@ -309,7 +309,7 @@ def delete_person_capability(request, person_id, capability_id):
 
 
 @login_required
-def modify_offtime(request, edit_id=None):
+def modify_offtime(request, edit_id=None, parent_offtime=None):
     instance = models.Offtime.objects.get(pk=edit_id) if edit_id else None
     if request.method == 'POST':
         f = OfftimeForm(request.POST, instance=instance)
@@ -317,7 +317,12 @@ def modify_offtime(request, edit_id=None):
             f.save()
             return HttpResponse('', mimetype="application/json")
     else:
-        f = OfftimeForm(instance=instance)
+        data = {}
+        if parent_offtime:
+            offtime = models.Offtime.objects.get(pk=parent_offtime)
+            data['person'] = offtime.person
+            data['parent_offtime'] = parent_offtime
+        f = OfftimeForm(data, instance=instance)
 
     return render_to_response('offtime_form_modal.html', {'offtime_form': f},
                               context_instance=RequestContext(request))

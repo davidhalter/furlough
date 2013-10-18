@@ -94,6 +94,15 @@ function editOfftime(id){
     });
 }
 
+function childOfftime(parent_offtime_id){
+    $.get('/ajax/child_offtime/' + parent_offtime_id + '.html', function(data) {
+        edit_offtime_id = undefined;
+        $('#addOfftime div.modal-body').html(data);
+        $('#addOfftime').modal('show')
+        setDatePicker();
+    });
+}
+
 /*
 function showContent(which) {
     $('#content div.content-element').css({'display': 'None'})

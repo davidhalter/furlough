@@ -32,4 +32,5 @@ urlpatterns = patterns('',
     url(r'^person_capability/delete/p(\d+)c(\d+)$', 'main.views.delete_person_capability'),
     url(r'^ajax/add_offtime.html$', 'main.views.modify_offtime'),
     url(r'^ajax/edit_offtime/(\d+).html$', 'main.views.modify_offtime'),
+    url(r'^ajax/child_offtime/(?P<parent_offtime>\d+).html$', 'main.views.modify_offtime'),
 )
