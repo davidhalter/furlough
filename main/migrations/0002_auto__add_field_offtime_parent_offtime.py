@@ -33,7 +33,7 @@ class Migration(SchemaMigration):
             'deleted': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'end_date': ('django.db.models.fields.DateTimeField', [], {}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'parent_offtime': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['main.Offtime']", 'null': 'True'}),
+            'parent_offtime': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['main.Offtime']", 'null': 'True', 'blank': 'True'}),
             'person': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['main.Person']"}),
             'start_date': ('django.db.models.fields.DateTimeField', [], {}),
             'type': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['main.OfftimeType']", 'on_delete': 'models.PROTECT'})
