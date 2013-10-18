@@ -104,7 +104,7 @@ class OfftimeForm(forms.ModelForm):
 
     class Meta:
         model = models.Offtime
-        fields = 'person', 'type', 'start_date', 'end_date', 'approved', 'comment'
+        exclude = 'deleted', 'added_date'
         widgets = {'start_date': DateWidget(), 'end_date': EndDateWidget()}
 
 
