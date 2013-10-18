@@ -89,18 +89,27 @@ class OfftimeForm(forms.ModelForm):
         return super(type(self), self).clean()
 
     def _check_if_between_dates(self):
+        parent_offtime = self.cleaned_data["parent_offtime"]
         start = self.cleaned_data["start_date"]
         end = self.cleaned_data["end_date"]
         f = self.cleaned_data["person"].offtimes()
         f = f.exclude(pk=self.instance.id).filter
-        overlapping = f(start_date__lte=start, end_date__gt=start) \
-                    | f(start_date__lt=end, end_date__gte=end) \
-                    | f(start_date__gt=start, end_date__lt=end)
+        if parent_offtime is None:
+            overlapping = f(start_date__lte=start, end_date__gt=start) \
+                        | f(start_date__lt=end, end_date__gte=end) \
+                        | f(start_date__gt=start, end_date__lt=end)
 
-        for offtime in overlapping:
-            msg = 'Dates are overlapping with an event from %s to %s.' \
-                    % (offtime.start_date.date(), offtime.end_date.date())
-            self._errors["start_date"] = self.error_class([msg])
+            for offtime in overlapping:
+                msg = 'Dates are overlapping with an event from %s to %s.' \
+                        % (offtime.start_date.date(), offtime.end_date.date())
+                self._errors["start_date"] = self.error_class([msg])
+        else:
+            overlapping = f(start_date__lte=start, end_date__gte=end)
+            if not len(overlapping):
+                msg = 'Dates are not in parent offtime range (%s to %s).' \
+                      % (parent_offtime.start_date.date(),
+                         parent_offtime.end_date.date())
+                self._errors["start_date"] = self.error_class([msg])
 
     class Meta:
         model = models.Offtime

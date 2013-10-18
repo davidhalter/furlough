@@ -14,6 +14,12 @@
 {% endif %}
 <p>{{ offtime.from_to_str | capfirst }}</p>
 
+{% if offtime.parent_offtime %}
+    <p><a href="#" onclick="return replace_offtime({{ offtime.parent_offtime.pk }})">
+        Parent offtime is: {{ offtime.parent_offtime }}
+    </a></p>
+{% endif %}
+
 {% if offtime.approved %}
     <button class="btn btn-success" onclick="replace_offtime({{ offtime.id }}, 'unaccept')">Unapprove</button>
 {% else %}
