@@ -27,7 +27,9 @@ def capability_available_dates(persons, iso_dates=False):
                 if v != v2:
                     break
                 del result[i+1]
-    offtimes = list(chain.from_iterable(p.offtimes() for p in persons))
+    offtimes = list(chain.from_iterable(
+                p.offtimes().filter(parent_offtime=None) for p in persons
+    ))
     num_persons = len(persons)
     dates = {o.start_date:num_persons for o in offtimes}
     dates.update({o.end_date:num_persons for o in offtimes})
@@ -199,6 +201,9 @@ class Offtime(models.Model):
     deleted = models.BooleanField(default=False)
     added_date = models.DateTimeField(auto_now_add=True, blank=True)
     parent_offtime = models.ForeignKey('self', null=True, blank=True)
+
+    def child_offtimes(self):
+        return Offtime.objects.filter(parent_offtime=self)
 
     @property
     def user_end_date(self):

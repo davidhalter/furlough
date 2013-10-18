@@ -192,6 +192,9 @@ def offtime(request, offtime_id, action=None):
             offtime.approved = False
         elif action == 'delete':
             offtime.deleted = True
+            for o in offtime.child_offtimes():
+                o.deleted = True
+                o.save()
         elif action == 'undelete':
             offtime.deleted = False
         offtime.save()
