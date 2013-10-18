@@ -134,9 +134,11 @@ def index(request):
 def timeline_json(request):
     def add_offtimes(person):
         offtimes = []
-        for o in person.offtimes():
+        # Order by should be by pk - the timeline javascript displays the
+        # former below the latter (which can be parent offtimes).
+        for o in person.offtimes().order_by('pk'):
             t = add_offtime_type(o.type)
-            tup = (o.pk, t, o.start_date.isoformat(), o.end_date.isoformat(), o.approved)
+            tup = o.pk, t, o.start_date.isoformat(), o.end_date.isoformat(), o.approved
             offtimes.append(tup)
         return offtimes
 
