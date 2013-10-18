@@ -72,6 +72,12 @@ class OfftimeForm(forms.ModelForm):
         super(type(self), self).__init__(*args, **kwargs)
         self.fields["person"].queryset = \
                             models.Person.objects.filter(deleted=False)
+        q = models.Offtime.objects.all()
+        if self.instance.person_id is not None:
+            q = q.filter(person__id=self.instance.person_id)
+        if self.instance.id is not None:
+            q = q.exclude(pk=self.instance.id)
+        self.fields["parent_offtime"].queryset = q
 
     def clean(self):
         start_date = self.cleaned_data.get("start_date")
@@ -85,7 +91,8 @@ class OfftimeForm(forms.ModelForm):
         if None not in (start_date, end_date) and end_date <= start_date:
             msg = u"End date should be greater than start date."
             self._errors["end_date"] = self.error_class([msg])
-        self._check_if_between_dates()
+        if start_date and end_date:
+            self._check_if_between_dates()
         return super(type(self), self).clean()
 
     def _check_if_between_dates(self):
