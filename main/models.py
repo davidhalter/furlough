@@ -212,4 +212,4 @@ class Offtime(models.Model):
                                 self.from_to_str())
 
     def __str__(self):
-        return "%s: %s" % (self.type.type, self.from_to_str())
+        return "%s - %s" % (self.type.name, self.from_to_str())
